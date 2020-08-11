@@ -2,7 +2,7 @@ project("Programowanie Systemowe Semestr 5" CXX)
 set(CMAKE_BUILD_TYPE Release)
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(EXECUTABLE_NAME main)
 # set(SFML_STATIC_LIBRARIES TRUE)
 # set(SFML_STATIC_STD_LIB)
@@ -27,10 +27,10 @@ set(
 # 	target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 # endif()
 
-# include_directories(libraries)
+add_subdirectory(libraries)
+add_subdirectory(test)
 
 target_link_libraries( ${EXECUTABLE_NAME}
 	${SFML_LIBRARIES_TO_LINK}
 )
 
-# include_directories(test)

@@ -1,7 +1,17 @@
+// STL
+
+// Boost
+
+// SFML
 #include <SFML/Graphics.hpp>
+
+// Project Includes
+#include "libraries/engine/include/point.h"
 
 int main()
 {
+	point p;
+
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
