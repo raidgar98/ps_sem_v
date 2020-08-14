@@ -1,6 +1,9 @@
-#include <engine/include/ship.h>
+#include "ship.h"
 
 #include <cassert>
+
+// #define or ||
+// #define and &&
 
 ship::ship(const point &pp1, const point &pp2)
 	: p1{pp1}, p2{pp2}
@@ -32,4 +35,10 @@ number ship::hits_left() const
 bool ship::hit(const point& p)
 {
 	if(!point::centric(p1, p)) return false;
+	if( p1.x == p.x )
+}
+
+void ship::_apply_hit(const point& p)
+{
+
 }

@@ -1,14 +1,20 @@
+project(tests CXX)
+enable_testing()
 
 file(GLOB tests_sources
 	"src/*.cpp"
 )
 
-# find_package(doctest REQUIRED)
+find_package(Boost 1.70 REQUIRED COMPONENTS unit_test_framework)
 
 add_executable(tests ${tests_sources})
-# target_compile_features(tests PRIVATE cxx_std_17)
-target_link_libraries( tests doctest )
+# add_dependencies(tests point_lib)
 
-# target_link_libraries(test PRIVATE doctest::doctest)
+target_include_directories(tests PRIVATE 
+	${BOOST_INCLUDE_DIRS}
+)
 
-target_include_directories( tests PUBLIC include )
+target_include_directories(tests PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(tests ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} point)
+
+add_test(NAME all_tests COMMAND tests)

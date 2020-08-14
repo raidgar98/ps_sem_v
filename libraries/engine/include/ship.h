@@ -4,7 +4,7 @@
 #include <vector>
 
 // Project includes
-#include <point.h>
+#include "../include/point.h"
 
 class ship
 {
@@ -13,6 +13,7 @@ class ship
 	number length() const;
 	bool is_alive() const;
 	number hits_left() const;
+
 	bool hit(const point& p);
 
 private:
@@ -21,5 +22,7 @@ private:
 	point p2;
 
 	std::vector<point> hits;
+
+	void _apply_hit(const point& p);
 
 };

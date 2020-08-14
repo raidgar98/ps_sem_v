@@ -7,20 +7,20 @@ add_library(types
 
 )
 
-FUNCTION(SUBDIRLIST result curdir)
+MACRO(SUBDIRLIST result curdir)
 	FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
 	SET(dirlist "")
 	FOREACH(child ${children})
-	IF(IS_DIRECTORY ${curdir}/${child} AND EXISTS ${curdir}/${child}/CMakeLists.txt)
-		message(${child})
-		LIST(APPEND dirlist ${child})
+		IF(IS_DIRECTORY ${curdir}/${child} AND EXISTS ${curdir}/${child}/CMakeLists.txt)
+			LIST(APPEND dirlist ${child})
 		ENDIF()
 	ENDFOREACH()
 	SET(${result} ${dirlist})
-ENDFUNCTION()
+ENDMACRO()
 
 SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
-foreach(subdir ${SUBDIRS})
-	add_subdirectory(${subdir})
-endforeach(subdir ${SUBDIRS})
+foreach(ss ${SUBDIRS})
+	message(${ss})
+	add_subdirectory(${ss})
+endforeach()

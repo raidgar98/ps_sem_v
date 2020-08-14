@@ -1,5 +1,5 @@
 project("Programowanie Systemowe Semestr 5" CXX)
-set(CMAKE_BUILD_TYPE Release)
+# set(CMAKE_BUILD_TYPE Release)
 cmake_minimum_required(VERSION 3.16)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -9,6 +9,10 @@ set(EXECUTABLE_NAME main)
 # set(SFML_USE_STATIC_STD_LIBS)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --static")
 # set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+
+
+add_subdirectory(libraries)
+add_subdirectory(test)
 
 add_executable( ${EXECUTABLE_NAME} main.cpp )
 
@@ -21,16 +25,16 @@ set(
 	sfml-audio
 	sfml-window
 	sfml-system
+	point
 )
 # if(SFML_FOUND)
 # 	include_directories(${SFML_INCLUDE_DIR})
 # 	target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 # endif()
 
-add_subdirectory(libraries)
-add_subdirectory(test)
-
 target_link_libraries( ${EXECUTABLE_NAME}
 	${SFML_LIBRARIES_TO_LINK}
+
+	point
 )
 

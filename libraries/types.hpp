@@ -1,3 +1,3 @@
 #pragma once
 
-using num = double;
+// using num = double;
