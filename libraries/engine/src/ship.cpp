@@ -2,8 +2,8 @@
 
 #include <cassert>
 
-// #define or ||
-// #define and &&
+#define or ||
+#define and &&
 
 ship::ship(const point &pp1, const point &pp2)
 	: p1{pp1}, p2{pp2}
@@ -35,7 +35,7 @@ number ship::hits_left() const
 bool ship::hit(const point& p)
 {
 	if(!point::centric(p1, p)) return false;
-	if( p1.x == p.x )
+	if( point::in_area(p1, p2, p) and [&](){ for(const point& _p : hits) {if(_p == p) return false; } return true; } ) _apply_hit(p); return;
 }
 
 void ship::_apply_hit(const point& p)

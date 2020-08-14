@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-using number = long long int;
+using number = long int;
+using unumber = unsigned long int;
 using floating = double;
 
 /*
@@ -13,10 +14,10 @@ struct point
 {
 
 	// Property required
-	number x;
-	number y;
+	unumber x;
+	unumber y;
 
-	explicit point(const number _x = 0, const number _y = 0) : x{_x}, y{_y} {}
+	explicit point(const unumber _x = 0ul, const unumber _y = 0ul) : x{_x}, y{_y} {}
 	static floating distance(const point& p1, const point& p2);
 	static bool centric(const point& p1, const point& p2);
 	static bool in_area(const point& p1, const point& p2, const point& shot);
