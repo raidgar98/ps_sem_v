@@ -8,14 +8,14 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem/operations.hpp>
 
-logger::logger(const std::string &file_name)
-	: preambula{file_name} {}
+logger::logger(const std::string &preambula)
+	: preambula{preambula} {}
 
 std::string logger::get_preambula(const uint16_t depth) const
 {
 	std::stringstream ss;
 	ss << "[" << boost::posix_time::to_iso_extended_string(boost::posix_time::microsec_clock::local_time()) << "]"; // time
-	ss << "[" << preambula << "]";																					// logger name
+	ss << "[" << std::string(preambula) << "]";																					// logger name
 	
 	const std::vector<boost::stacktrace::frame> frames{boost::stacktrace::stacktrace().as_vector()};
 
@@ -57,20 +57,20 @@ void logger::print_out(const std::string &msg, const format_function &_format) c
 
 void logger::dbg(const std::string & msg) const
 {
-	print_out( get_preambula(3) + msg, debug_format );
+	print_out( get_preambula(2) + msg, debug_format );
 }
 
 void logger::info(const std::string & msg) const
 {
-	print_out( get_preambula(3) + msg, info_format );
+	print_out( get_preambula(2) + msg, info_format );
 }
 
 void logger::warn(const std::string & msg) const
 {
-	print_out( get_preambula(3) + msg, warn_format );
+	print_out( get_preambula(2) + msg, warn_format );
 }
 
 void logger::error(const std::string & msg) const
 {
-	print_out( get_preambula(3) + msg, erro_format );
+	print_out( get_preambula(2) + msg, erro_format );
 }

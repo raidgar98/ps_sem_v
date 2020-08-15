@@ -9,19 +9,24 @@
 #include "../../rang/include/rang.hpp"
 
 // Boost
-#include <boost/core/demangle.hpp>
+#include <boost/type_index.hpp>
+
+// STL
+#include <cctype>
 
 class logger
 {
 public:
 	using format_function = std::function<std::ostream &(std::ostream &)>;
 
-	template <typename T>
+	template <class T>
 	inline static logger get_logger(const char * alternative = "unknown")
 	{
-		const char *name = typeid(T).name();
-		boost::core::scoped_demangled_name demangled( name );
-		return logger( (demangled.get() ? demangled.get() : alternative) );
+		const std::string name = boost::typeindex::type_id<T>().pretty_name();
+		for(const char c : name)
+			if( std::isalnum(c) == 0 and c != '_')
+				return logger(alternative);
+		return logger( name );
 	}
 
 	inline static std::string dump_file;
@@ -38,7 +43,7 @@ public:
 	inline static format_function erro_format = [](std::ostream &os) -> std::ostream & { logger::erro_color_scheme(os); return os << "[ERROR]"; };
 
 	template <typename T>
-	logger &operator<<(const T &obj)
+	const logger &operator<<(const T &obj) const
 	{
 		std::stringstream ss;
 		ss << get_preambula(2);
@@ -53,11 +58,17 @@ public:
 	void error(const std::string &) const;
 
 private:
-	const std::string_view preambula;
+	const std::string preambula;
 	std::string get_preambula(const uint16_t depth) const;
-	logger(const std::string &file_name);
+	logger(const std::string &preambula);
 	void print_out(const std::string &, const format_function &_format = logger::reset_color_scheme) const;
 };
+
+template<typename T>
+inline logger& operator<<(logger& out, const T& obj)
+{
+	return out.operator<<(obj);
+}
 
 template <typename T>
 class Log

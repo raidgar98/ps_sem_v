@@ -11,8 +11,9 @@ BOOST_AUTO_TEST_SUITE(ship_tests)
 
 BOOST_AUTO_TEST_CASE(ship_test_1)
 {
-	constexpr unumber ship_length = 10;
-	ship s1{point{0, 0}, point{ship_length, 0}};
+	constexpr unumber ship_length = 11;
+	constexpr unumber ship_max_x = 10;
+	ship s1{point{0, 0}, point{ship_max_x, 0}};
 
 	const auto shoot = [&](const point &p, const bool _hit) -> void { BOOST_REQUIRE_EQUAL(s1.hit(p), _hit); };
 	const auto check_left_hits = [&](const number length) -> void { BOOST_REQUIRE_EQUAL(s1.hits_left(), length); };
@@ -23,29 +24,29 @@ BOOST_AUTO_TEST_CASE(ship_test_1)
 	check_alive();
 
 	shoot(point{0, 0}, true);
-	check_left_hits( ship_length - 1);
+	check_left_hits(ship_length - 1);
 	check_alive();
 
-	shoot(point{0, 1}, true);
+	shoot(point{1, 0}, true);
 	check_left_hits(ship_length - 2);
 	check_alive();
 
-	shoot(point{0, 1}, false);
+	shoot(point{1, 0}, false);
 	check_left_hits(ship_length - 2);
 	check_alive();
 
-	for(unumber i = 2; i <= ship_length - 1; i++)
+	for(unumber i = 2; i <= ship_max_x - 1; i++)
 	{
-		shoot(point{0, i}, true);
+		shoot(point{i, 0}, true);
 		check_left_hits(ship_length - i - 1);
 		check_alive();
 
-		shoot(point{0, i}, false);
+		shoot(point{i, 0}, false);
 		check_left_hits(ship_length - i - 1);
 		check_alive();
 	}
 
-	shoot(point{0, ship_length}, true);
+	shoot(point{ship_max_x, 0}, true);
 	check_left_hits(0);
 	check_death();
 }

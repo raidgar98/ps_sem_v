@@ -21,10 +21,12 @@ bool point::in_area(const point &p1, const point &p2, const point &shot)
 	point a1{p1}, a2{p2};
 	point::order(a1, a2);
 
-	if (shot.x - a1.x > a2.x - a1.x ) return false;
-	if (shot.y - a1.y > a2.y - a1.y) return false;
-
-	return true;
+	return (
+		( shot.x >= a1.x ) and
+		( shot.x <= a2.x ) and
+		( shot.y >= std::min(a1.y, a2.y) ) and
+		( shot.y <= std::max(a1.y, a2.y) )
+	);
 }
 
 // sort given points, so p1 is closer to {0;0}
