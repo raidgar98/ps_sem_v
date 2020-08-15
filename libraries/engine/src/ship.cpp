@@ -1,10 +1,14 @@
 #include "ship.h"
 
+// STL
 #include <cassert>
+#include <tuple>
+#include <array>
 
 ship::ship(const point &pp1, const point &pp2)
 	: p1{pp1}, p2{pp2}
 {
+	assert( pp1 != pp2 );
 	assert(point::centric(pp1, pp2));
 	point::order(p1, p2);
 	hits.reserve(length());
@@ -37,10 +41,82 @@ bool ship::hit(const point &p)
 		log.dbg("Ship hit ( " + std::to_string(p.x) + " , " + std::to_string(p.y) + " )");
 		return true;
 	}
-	else return false;
+	else
+		return false;
 }
 
 void ship::_apply_hit(const point &p)
 {
 	hits.insert(p);
+}
+
+bool ship::collision(const ship &sh1, const ship &sh2)
+{
+	// Calculating curves
+	using vec = const std::array<floating, 2>;
+	using vvec = const std::array<vec, 2>;
+	constexpr floating b = 1.0;
+
+	const auto determitant = [](const vvec& matrix) -> floating { return (matrix[0][0] * matrix[1][1])-(matrix[0][1] * matrix[1][0]); };
+
+	const auto curve = [&](const point& p1, const point& p2) -> std::tuple<floating, floating, floating> {
+
+		const floating _W = determitant(vvec{
+			vec{ static_cast<floating>(p1.x), b},
+			vec{ static_cast<floating>(p2.x), b}
+		});
+
+		const floating _W_a = determitant(vvec{
+			vec{ static_cast<floating>(p1.y), b },
+			vec{ static_cast<floating>(p2.y), b }
+		});
+
+		const floating _W_b = determitant(vvec{
+			vec{ static_cast<floating>(p1.x), static_cast<floating>(p1.y) },
+			vec{ static_cast<floating>(p2.x), static_cast<floating>(p2.y) }
+		});
+
+		return { _W_a / _W, _W_b / _W, _W };
+	};
+
+	auto [a1, c1, _w_1] = curve( sh1.p1, sh1.p2 );
+	auto [a2, c2, _w_2] = curve( sh2.p1, sh2.p2 );
+
+	if( _w_1 == _w_2 and _w_1 == 0.0) return false;
+	else if( _w_1 == 0.0 )
+	{
+		const point pp{ sh1.p1.x, sh2.p1.y };
+		return point::in_area( sh1.p1, sh1.p2, pp ) and point::in_area( sh2.p1, sh2.p2, pp);
+	}else if( _w_2 == 0.0)
+	{
+		const point pp{ sh2.p1.x, sh1.p1.y };
+		return point::in_area( sh1.p1, sh1.p2, pp ) and point::in_area( sh2.p1, sh2.p2, pp);
+	}
+
+	// Checking are curves crossing
+	const floating W = determitant(vvec{
+		vec{ a1, b },
+		vec{ a2, b }
+	});
+
+	const floating W_x = determitant(vvec{
+		vec{ c1, b },
+		vec{ c2, b }
+	});
+
+	const floating W_y = determitant(vvec{
+		vec{ a1, c1 },
+		vec{ a2, c2 }
+	});
+
+	const floating x = W_x / W;
+	const floating y = W_y / W;
+
+	return ( ( W == 0.0 ) and  ( W_x == 0.0 ) and ( W_y == 0.0 ) ) or 
+	( 
+		W != 0.0 and (
+			point::in_area( sh1.p1, sh1.p2, x, y ) or 
+			point::in_area( sh2.p1, sh2.p2, x, y ) 
+		)
+	);
 }

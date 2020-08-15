@@ -16,16 +16,21 @@ bool point::centric(const point &p1, const point &p2)
 	return (p1.x == p2.x) || (p1.y == p2.y);
 }
 
-bool point::in_area(const point &p1, const point &p2, const point &shot)
+bool point::in_area(const point &p1, const point &p2, const point& shot)
+{
+	return point::in_area( p1, p2, static_cast<floating>(shot.x), static_cast<floating>(shot.y) );
+}
+
+bool point::in_area(const point &p1, const point &p2, const floating x, const floating y)
 {
 	point a1{p1}, a2{p2};
 	point::order(a1, a2);
 
 	return (
-		( shot.x >= a1.x ) and
-		( shot.x <= a2.x ) and
-		( shot.y >= std::min(a1.y, a2.y) ) and
-		( shot.y <= std::max(a1.y, a2.y) )
+		( x >= a1.x ) and
+		( x <= a2.x ) and
+		( y >= std::min(a1.y, a2.y) ) and
+		( y <= std::max(a1.y, a2.y) )
 	);
 }
 

@@ -21,6 +21,7 @@ struct point
 	static floating distance(const point& p1, const point& p2);
 	static bool centric(const point& p1, const point& p2);
 	static bool in_area(const point& p1, const point& p2, const point& shot);
+	static bool in_area(const point &p1, const point &p2, const floating x, const floating y);
 	static void order(point& p1, point& p2);
 	
 	friend inline bool operator<(const point& p1, const point& p2)
@@ -31,6 +32,11 @@ struct point
 	friend inline bool operator==(const point& p1, const point& p2)
 	{
 		return ( p1.x == p2.x && p1.y == p2.y );
+	}
+
+	friend inline bool operator!=(const point& p1, const point& p2)
+	{
+		return not (p1 == p2);
 	}
 };
 

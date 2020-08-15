@@ -17,6 +17,7 @@ public:
 	number hits_left() const;
 
 	bool hit(const point& p);
+	static bool collision(const ship& sh1, const ship& sh2);
 
 private:
 
