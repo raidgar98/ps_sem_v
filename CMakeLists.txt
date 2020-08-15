@@ -1,13 +1,14 @@
 # minimum cmake version
 cmake_minimum_required(VERSION 3.16)
 
-# prevent build in source
-if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
-	message(FATAL_ERROR "In-source builds are not allowed")
-endif()
-
 # project name and language
 project("Programowanie Systemowe Semestr 5" CXX)
+
+# prevent build in source
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+	message(FATAL_ERROR "In-source builds are not allowed, remove CMakeFiles and CMakeCache.txt")
+endif()
 
 # use c++17 standard
 set(CMAKE_CXX_STANDARD 17)
