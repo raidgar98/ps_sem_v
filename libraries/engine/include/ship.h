@@ -1,13 +1,15 @@
 #pragma once
 
-// STL
-#include <vector>
+// Boost
+#include <boost/container/flat_set.hpp>
 
 // Project includes
 #include "../include/point.h"
+#include "../../logger/include/logger.h"
 
-class ship
+class ship : Log<ship>
 {
+public:
 
 	ship(const point& p1, const point& p2);
 	number length() const;
@@ -21,7 +23,7 @@ private:
 	point p1;
 	point p2;
 
-	std::vector<point> hits;
+	boost::container::flat_set<point> hits;
 
 	void _apply_hit(const point& p);
 

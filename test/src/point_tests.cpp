@@ -1,6 +1,10 @@
 #define BOOST_TEST_MAIN
 
+// Boost
 #include <boost/test/unit_test.hpp>
+
+// Project
+#include "../include/testbase.h"
 #include "../../libraries/engine/include/point.h"
 
 BOOST_AUTO_TEST_SUITE(point_tests)

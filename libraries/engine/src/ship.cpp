@@ -2,19 +2,14 @@
 
 #include <cassert>
 
-#define or ||
-#define and &&
-
 ship::ship(const point &pp1, const point &pp2)
 	: p1{pp1}, p2{pp2}
 {
 	assert(point::centric(pp1, pp2));
-	if(pp1 < pp2)
-	{
-		this->p1 = pp2;
-		this->p2 = pp1;
-	}
+	point::order(p1, p2);
 	hits.reserve(length());
+
+	log.dbg("Ship with size: " + std::to_string( hits.capacity() ) + ", created");
 }
 
 number ship::length() const
@@ -24,7 +19,7 @@ number ship::length() const
 
 bool ship::is_alive() const
 {
-	return hits.size() < length();
+	return static_cast<number>( hits.size() ) < length();
 }
 
 number ship::hits_left() const
@@ -34,11 +29,17 @@ number ship::hits_left() const
 
 bool ship::hit(const point& p)
 {
-	if(!point::centric(p1, p)) return false;
-	if( point::in_area(p1, p2, p) and [&](){ for(const point& _p : hits) {if(_p == p) return false; } return true; } ) _apply_hit(p); return;
+	if(not (point::centric(p1, p) or point::centric(p2, p))) return false;
+	if( point::in_area(p1, p2, p) and hits.find(p) == hits.end() )
+	{
+		_apply_hit(p);
+		log.dbg("Ship hit ( " + std::to_string(p.x) + " , " + std::to_string(p.y) + " )");
+		return true;
+	}
+	else return false;
 }
 
 void ship::_apply_hit(const point& p)
 {
-
+	hits.insert( p );
 }

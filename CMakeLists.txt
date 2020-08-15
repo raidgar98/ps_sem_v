@@ -1,8 +1,13 @@
-# project name and language
-project("Programowanie Systemowe Semestr 5" CXX)
-
 # minimum cmake version
 cmake_minimum_required(VERSION 3.16)
+
+# prevent build in source
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+	message(FATAL_ERROR "In-source builds are not allowed")
+endif()
+
+# project name and language
+project("Programowanie Systemowe Semestr 5" CXX)
 
 # use c++17 standard
 set(CMAKE_CXX_STANDARD 17)

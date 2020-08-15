@@ -15,6 +15,13 @@ target_include_directories(tests PRIVATE
 )
 
 target_include_directories(tests PRIVATE ${Boost_INCLUDE_DIRS})
-target_link_libraries(tests ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} point)
+target_link_libraries( tests 
+
+	${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} 
+
+	point
+	ship
+	logger
+)
 
 add_test(NAME all_tests COMMAND tests)
