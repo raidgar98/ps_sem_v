@@ -18,6 +18,8 @@ struct point
 	unumber y;
 
 	explicit point(const unumber _x = 0ul, const unumber _y = 0ul) : x{_x}, y{_y} {}
+
+	point transposition() const;
 	static floating distance(const point& p1, const point& p2);
 	static bool centric(const point& p1, const point& p2);
 	static bool in_area(const point& p1, const point& p2, const point& shot);

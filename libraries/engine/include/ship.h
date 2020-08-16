@@ -19,6 +19,9 @@ public:
 	bool hit(const point& p);
 	static bool collision(const ship& sh1, const ship& sh2);
 
+	const point& get_p1() const { return p1; }
+	const point& get_p2() const { return p2; }
+
 private:
 
 	point p1;
@@ -27,5 +30,14 @@ private:
 	boost::container::flat_set<point> hits;
 
 	void _apply_hit(const point& p);
+
+	enum centric_type
+	{
+		None = 0,
+		X,
+		Y
+	};
+
+	static centric_type _ship_centricion( const ship&, const ship& );
 
 };

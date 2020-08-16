@@ -11,7 +11,7 @@ class visitor
 };
 
 template<typename T>
-class visitable : public T
+class visitable
 {
 public:
 

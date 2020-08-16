@@ -21,6 +21,8 @@ target_link_libraries( tests
 
 	point
 	ship
+	area
+
 	logger
 )
 

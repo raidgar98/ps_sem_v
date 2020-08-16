@@ -59,16 +59,45 @@ BOOST_AUTO_TEST_CASE(ship_collision_test)
 	const ship sh2{point{2, 1}, point{6, 1}};
 	const ship sh3{point{3, 0}, point{3, 10}};
 	const ship sh4{point{5, 5}, point{5, 6}};
+	const ship sh5{point{3, 1}, point{3, 9}};
+	const ship sh6{point{3, 0}, point{3, 9}};
+	const ship sh7{point{3, 1}, point{3, 10}};
+	const ship sh8{point{3, 10}, point{3, 11}};
+	const ship sh9{point{3, 11}, point{3, 12}};
 
 	const ship& reference = sh1;
 
-	const auto check_collision = [&](const ship& sh, const bool should_collide) { BOOST_REQUIRE_EQUAL( ship::collision( reference, sh ), should_collide ); };
+	const auto check_custom_collision = [&](const ship& sh1, const ship& sh2, const bool should_collide) { BOOST_REQUIRE_EQUAL( ship::collision( sh1, sh2 ), should_collide ); };
+	const auto check_collision = [&](const ship& sh, const bool should_collide) { check_custom_collision(reference, sh, should_collide); };
 
+	lout.info("Standard checks");
 	check_collision( sh0, false );
 	check_collision( sh1, true );
 	check_collision( sh2, true );
 	check_collision( sh3, true );
 	check_collision( sh4, false );
+
+	lout.info("Advanced checks");
+	check_custom_collision( sh3, sh3, true );
+	check_custom_collision( sh3, sh5, true );
+	check_custom_collision( sh3, sh6, true );
+	check_custom_collision( sh3, sh7, true );
+	check_custom_collision( sh3, sh8, true );
+	check_custom_collision( sh3, sh9, false );
+
+	const ship ref{ point{ 5, 5 }, point{ 10, 5 } };
+	check_custom_collision( ref, ship{ point{ 0,5 }, point{ 4, 5 } }, false );
+	check_custom_collision( ref, ship{ point{ 0,5 }, point{ 5, 5 } }, true );
+	check_custom_collision( ref, ref, true );
+	check_custom_collision( ref, ship{ point{ 5,5 }, point{ 9, 5 } }, true );
+	check_custom_collision( ref, ship{ point{ 5,5 }, point{ 11, 5 } }, true );
+	check_custom_collision( ref, ship{ point{ 4,5 }, point{ 9, 5 } }, true );
+	check_custom_collision( ref, ship{ point{ 6,5 }, point{ 9, 5 } }, true );
+	check_custom_collision( ref, ship{ point{ 11,5 }, point{ 20, 5 } }, false );
+	check_custom_collision( ref, ship{ point{ 10,5 }, point{ 20, 5 } }, true );
+	check_custom_collision( ref, ship{ point{ 9,5 }, point{ 20, 5 } }, true );
+	
+
 }
 
 BOOST_AUTO_TEST_SUITE_END()

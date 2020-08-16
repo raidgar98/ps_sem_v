@@ -29,7 +29,7 @@ public:
 		return logger( name );
 	}
 
-	inline static std::string dump_file;
+	static bool set_dump_file( const std::string& file );
 
 	inline static format_function reset_color_scheme = [](std::ostream &os) -> std::ostream & { return os << rang::bg::reset << rang::fg::reset; };
 	inline static format_function debug_color_scheme = [](std::ostream &os) -> std::ostream & { return os << rang::bg::reset << rang::fg::gray; };
@@ -37,7 +37,7 @@ public:
 	inline static format_function warn_color_scheme = [](std::ostream &os) -> std::ostream & { return os << rang::bg::reset << rang::fg::yellow; };
 	inline static format_function erro_color_scheme = [](std::ostream &os) -> std::ostream & { return os << rang::bg::reset << rang::fg::red; };
 
-	inline static format_function debug_format = [](std::ostream &os) -> std::ostream & { logger::info_color_scheme(os); return os << "[DEBUG]"; };
+	inline static format_function debug_format = [](std::ostream &os) -> std::ostream & { logger::debug_color_scheme(os); return os << "[DEBUG]"; };
 	inline static format_function info_format = [](std::ostream &os) -> std::ostream & { logger::info_color_scheme(os); return os << "[INFO]"; };
 	inline static format_function warn_format = [](std::ostream &os) -> std::ostream & { logger::warn_color_scheme(os); return os << "[WARNING]"; };
 	inline static format_function erro_format = [](std::ostream &os) -> std::ostream & { logger::erro_color_scheme(os); return os << "[ERROR]"; };
@@ -58,6 +58,8 @@ public:
 	void error(const std::string &) const;
 
 private:
+
+	inline static std::string dump_file;
 	const std::string preambula;
 	std::string get_preambula(const uint16_t depth) const;
 	logger(const std::string &preambula);
@@ -65,7 +67,7 @@ private:
 };
 
 template<typename T>
-inline logger& operator<<(logger& out, const T& obj)
+inline const logger& operator<<(logger& out, const T& obj)
 {
 	return out.operator<<(obj);
 }
@@ -74,5 +76,5 @@ template <typename T>
 class Log
 {
 public:
-	logger log = logger::get_logger<T>();
+	inline static logger log = logger::get_logger<T>();
 };

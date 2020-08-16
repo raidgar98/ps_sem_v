@@ -40,3 +40,8 @@ void point::order(point &p1, point &p2)
 	const point p3 = std::min(p1, p2);
 	if (p3 == p2) std::swap(p1, p2);
 }
+
+point point::transposition() const
+{
+	return point{ y, x };
+}

@@ -19,15 +19,10 @@ std::string logger::get_preambula(const uint16_t depth) const
 	
 	const std::vector<boost::stacktrace::frame> frames{boost::stacktrace::stacktrace().as_vector()};
 
-	// std::cout << "#######################" <<std::endl;
-	// for(const auto& fr : frames)
-	// 	std::cout << "STACK: " << fr.name() << ": " << fr.source_file() << ":" << fr.source_line() << std::endl;
-	// std::cout << "#######################" <<std::endl;
-
 	if (depth < frames.size()) // info about log position
 	{
 		const boost::stacktrace::frame &fr{frames[depth]};
-		if(fr.source_line() > 0) ss << "[" << fr.source_file() << ":" << fr.source_line() << "]" << "[" << fr.name() << "]";
+		if(fr.source_line() > 0) ss << "[" << boost::filesystem::path(fr.source_file()).filename().c_str() << ":" << fr.source_line() << "]" << "[" << fr.name() << "]";
 	}
 	return ss.str() + " ";
 }
@@ -36,17 +31,15 @@ void logger::print_out(const std::string &msg, const format_function &_format) c
 {
 	if (not logger::dump_file.empty())
 	{
-		std::unique_ptr<std::ofstream> file{nullptr};
-		if (boost::filesystem::exists(boost::filesystem::path(logger::dump_file)))
-			file = std::make_unique<std::ofstream>(logger::dump_file, std::ios::app);
-		else
-			file = std::make_unique<std::ofstream>(logger::dump_file);
-
-		if (file->good())
+		std::ofstream file{ logger::dump_file, std::ios::app };
+		if (file.good())
 		{
-			(*file) << msg << std::endl;
+			_format(file);
+			file << msg << std::endl;
+			logger::reset_color_scheme( file );
+			file << '\0';
 		}
-		file->close();
+		file.close();
 	}
 
 	_format(std::cout);
@@ -73,4 +66,24 @@ void logger::warn(const std::string & msg) const
 void logger::error(const std::string & msg) const
 {
 	print_out( get_preambula(2) + msg, erro_format );
+}
+
+bool logger::set_dump_file( const std::string& file )
+{
+	logger logg = logger::get_logger<logger>("logger");
+
+	if(boost::filesystem::exists(boost::filesystem::path(file)))
+		logg.warn("File " + file + " will be deleted." );
+
+	std::ofstream f(file);
+	if(f.good()) f << "";
+	else
+	{
+		logg.error("Failed to create " + file);
+		return false;
+	}
+	f.close();
+
+	logger::dump_file = file;
+	return true;
 }
