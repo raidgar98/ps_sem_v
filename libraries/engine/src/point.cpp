@@ -45,3 +45,21 @@ point point::transposition() const
 {
 	return point{ y, x };
 }
+
+std::vector<point>* point::points_on_distance(const point& pp1, const point& pp2)
+{
+	point p1{pp1}, p2{pp2};
+	point::order(p1, p2);
+
+	std::vector<point>* ret = new std::vector<point>();
+	ret->reserve( point::distance(p1, p2) );
+
+	const unumber max_y = std::max(p1.y, p2.y);
+	const unumber min_y = std::min(p1.y, p2.y);
+
+	for(unumber i = p1.x; i <= p2.x; i++)
+		for(unumber j = min_y; j <= max_y; j++)
+			ret->emplace_back( i, j );
+
+	return ret;
+}

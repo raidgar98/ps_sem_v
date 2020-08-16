@@ -1,7 +1,7 @@
 #include "../include/area.h"
 
 // STL
-#include <cassert>
+
 
 area::area(const unumber x_dim, const unumber y_dim, const unumber max_ship_count)
 	: x_dim{x_dim}, y_dim{y_dim}, max_ships{max_ship_count}

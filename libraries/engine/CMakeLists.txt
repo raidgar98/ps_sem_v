@@ -14,7 +14,8 @@ MACRO(create_library libname)
 
 ENDMACRO()
 
-create_library(point)
+create_library(round_manager types)
+create_library(point types)
 create_library(ship point logger)
 create_library(area ship)
 create_library(engine area)

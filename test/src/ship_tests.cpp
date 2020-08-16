@@ -1,11 +1,10 @@
 #define BOOST_TEST_CASE
 
 // Boost
-#include <boost/test/unit_test.hpp>
+// #include <boost/test/unit_test.hpp>
 
 // Project
 #include "../include/testbase.h"
-#include "../../libraries/engine/include/ship.h"
 
 BOOST_AUTO_TEST_SUITE(ship_tests)
 

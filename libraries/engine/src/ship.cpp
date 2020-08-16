@@ -1,7 +1,7 @@
 #include "ship.h"
 
 // STL
-#include <cassert>
+
 #include <tuple>
 #include <array>
 

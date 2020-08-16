@@ -1,10 +1,11 @@
 #pragma once
 
+// STL
 #include <iostream>
+#include <vector>
 
-using number = long int;
-using unumber = unsigned long int;
-using floating = double;
+// Project invludes
+#include "../../types.hpp"
 
 /*
 	In this coordinate system top left corner is (0,0), if we go down, y increase, if right x increases. 
@@ -25,6 +26,8 @@ struct point
 	static bool in_area(const point& p1, const point& p2, const point& shot);
 	static bool in_area(const point &p1, const point &p2, const floating x, const floating y);
 	static void order(point& p1, point& p2);
+
+	static std::vector<point>* points_on_distance(const point&, const point&);
 	
 	friend inline bool operator<(const point& p1, const point& p2)
 	{

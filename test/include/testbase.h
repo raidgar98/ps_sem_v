@@ -1,11 +1,25 @@
 #pragma once
 
+// Boost
+#include <boost/test/unit_test.hpp>
+
+// Project includes
+#include "../../libraries/engine/include/point.h"
+#include "../../libraries/engine/include/ship.h"
+#include "../../libraries/engine/include/area.h"
 #include "../../libraries/logger/include/logger.h"
 
-class TestLogger
+namespace testbase
 {
-public:
-	static logger log;
-};
 
-#define lout TestLogger::log
+	class TestLogger
+	{
+	public:
+		static logger log;
+	};
+
+	void add_ship( area&, const ship&, const bool );
+
+} // namespace testbase
+
+#define lout testbase::TestLogger::log
