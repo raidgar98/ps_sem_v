@@ -8,11 +8,14 @@ class engine : Log<engine>
 {
 public:
 
-	int a;
-
+	engine(const unumber width, const unumber height, const unumber max_ships, const unumber players);
+	bool shoot(const point&);
+	bool win() const;
+	void next_turn();
 
 private:
 
-	// std::vector<area> players;
+	area* current_player{ nullptr };
+	std::vector<area> players;
 
 };

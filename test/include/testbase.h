@@ -19,6 +19,7 @@ namespace testbase
 	};
 
 	void add_ship( area&, const ship&, const bool );
+	void destroy_ship(area& a, ship& s);
 
 } // namespace testbase
 

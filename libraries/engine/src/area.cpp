@@ -3,12 +3,14 @@
 // STL
 
 
-area::area(const unumber x_dim, const unumber y_dim, const unumber max_ship_count)
+area::area(const unumber x_dim, const unumber y_dim, const unumber max_ship_count, const std::vector<ship>& _ships)
 	: x_dim{x_dim}, y_dim{y_dim}, max_ships{max_ship_count}
 {
 	assert(x_dim > 0);
 	assert(y_dim > 0);
 	assert(max_ship_count > 0);
+	for(const ship& s : _ships)
+		add_ship( s );
 }
 
 bool area::add_ship(const ship &s)
