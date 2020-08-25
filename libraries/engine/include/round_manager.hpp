@@ -66,9 +66,10 @@ public:
 
 	round_manager(collection_t& players, win_check check) : players{ players }, is_win{ check } { assert( players.size() >= 2 ); }
 
+	win_check is_win;
+
 private:
 	collection_t &players;
-	win_check is_win;
 
 	round_iterator get_it(const number nm) const
 	{

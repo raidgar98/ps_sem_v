@@ -7,6 +7,7 @@
 #include "../../libraries/engine/include/point.h"
 #include "../../libraries/engine/include/ship.h"
 #include "../../libraries/engine/include/area.h"
+#include "../../libraries/engine/include/engine.h"
 #include "../../libraries/logger/include/logger.h"
 
 namespace testbase
