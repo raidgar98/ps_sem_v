@@ -6,7 +6,9 @@
 // STL
 #include <vector>
 
-class area : Log<area>
+class area : 
+	private Log<area>,
+	public Visitable<>
 {
 public:
 
@@ -15,9 +17,10 @@ public:
 	bool add_ship(const ship&);
 	const std::vector<ship>& get_ships() const;
 	// returns x dimension, y dimension and maximum number of ships
-	std::tuple<unumber, unumber, unumber> get_params() const { return x_dim, y_dim, max_ships; }
+	std::tuple<unumber, unumber, unumber> get_params() const { return {x_dim, y_dim, max_ships}; }
 
 	static bool shoot(area&, const point&);
+	virtual void accept( abstract_visitor* v ) override;
 
 private:
 

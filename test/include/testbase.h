@@ -10,6 +10,9 @@
 #include "../../libraries/engine/include/engine.h"
 #include "../../libraries/logger/include/logger.h"
 
+#define CHECK_ASSERTION_WITH_MESSAGE( Expression, Exception, RequiredMessage ) BOOST_REQUIRE_EXCEPTION( Expression, Exception, [](const Exception& e){ return (RequiredMessage == "" ? true : e.what() == RequiredMessage); } )
+#define CHECK_ASSERTION( Expression, Exception ) CHECK_ASSERTION_WITH_MESSAGE( Expression, Exception, "" )
+
 namespace testbase
 {
 

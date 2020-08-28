@@ -6,8 +6,11 @@
 // Project includes
 #include "../include/point.h"
 #include "../../logger/include/logger.h"
+#include "../../patterns/include/visitor.hpp"
 
-class ship : Log<ship>
+class ship : 
+	private Log<ship>, 
+	public Visitable<>
 {
 public:
 

@@ -8,8 +8,8 @@
 ship::ship(const point &pp1, const point &pp2)
 	: p1{pp1}, p2{pp2}
 {
-	assert( pp1 != pp2 );
-	assert(point::centric(pp1, pp2));
+	require( pp1 != pp2 );
+	require(point::centric(pp1, pp2));
 	point::order(p1, p2);
 	hits.reserve(length());
 

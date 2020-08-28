@@ -6,9 +6,9 @@
 area::area(const unumber x_dim, const unumber y_dim, const unumber max_ship_count, const std::vector<ship>& _ships)
 	: x_dim{x_dim}, y_dim{y_dim}, max_ships{max_ship_count}
 {
-	assert(x_dim > 0);
-	assert(y_dim > 0);
-	assert(max_ship_count > 0);
+	require(x_dim > 0);
+	require(y_dim > 0);
+	require(max_ship_count > 0);
 	for(const ship& s : _ships)
 		add_ship( s );
 }
@@ -58,4 +58,11 @@ bool area::shoot(area &a, const point &p)
 unumber area::count_alive() const
 {
 	return std::count_if(ships.begin(), ships.end(), [](const ship &s) { return s.is_alive(); });
+}
+
+void area::accept( abstract_visitor* v )
+{
+	v->visit(this);
+	for( ship& sh : this->ships )
+		sh.accept( v );
 }

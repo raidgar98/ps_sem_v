@@ -4,18 +4,20 @@
 #include <boost/core/demangle.hpp>
 
 
-class visitor
+class abstract_visitor
 {
+public:
+	// default visitor (do nothing)
 	template<typename T>
-	void visit(T* ptr) {  }
+	void visit(T * ptr) {  }
 };
 
-template<typename T>
-class visitable
+template<class minimum_visitor = abstract_visitor>
+class Visitable
 {
 public:
 
-	void accept( visitor* v )
+	virtual void accept( minimum_visitor* v )
 	{
 		v->visit( this );
 	}

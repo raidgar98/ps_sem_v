@@ -27,14 +27,14 @@ public:
 		round_manager::value_type &operator*()
 		{
 			// round_iterator::log << nm;
-			assert(nm >= 0);
+			require(nm >= 0);
 			auto it = mgr.players.begin();
 			std::advance(it, nm);
 			return *it;
 		}
 		round_manager::value_type &operator->()
 		{
-			assert(nm >= 0);
+			require(nm >= 0);
 			auto it = mgr.players.begin();
 			std::advance(it, nm);
 			return *it;
@@ -64,7 +64,7 @@ public:
 		return get_it(-2);
 	}
 
-	round_manager(collection_t& players, win_check check) : players{ players }, is_win{ check } { assert( players.size() >= 2 ); }
+	round_manager(collection_t& players, win_check check) : players{ players }, is_win{ check } { require( players.size() >= 2 ); }
 
 	win_check is_win;
 

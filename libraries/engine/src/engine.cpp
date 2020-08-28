@@ -16,16 +16,16 @@ engine::engine(const players_container_t& _players)
 			manager.begin()
 		}
 {
-	assert( players.size() > 0 );
-	assert( not manager.is_win(players) );
+	require( players.size() > 0 );
+	require( not manager.is_win(players) );
 	const auto [ width, height, max_ships ] = players[0].get_params();
 
 	for(const area& a : players)
 	{
 		const auto [ _width, _height, _max_ships ] = a.get_params();
-		assert( width == _width );
-		assert( height == _height );
-		assert( max_ships == _max_ships );
+		require( width == _width );
+		require( height == _height );
+		require( max_ships == _max_ships );
 	}
 }
 
