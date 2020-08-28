@@ -15,30 +15,33 @@
 
 template<typename T>
 using threadsafe_collection_type = boost::concurrent::sync_queue<T>;
-
-using render_collection_t = threadsafe_collection_type<Visitable<>>;
-using result_collection_t = threadsafe_collection_type<sf::Drawable>;
+using result_collection_t = threadsafe_collection_type< std::shared_ptr<sf::RectangleShape> >;
 
 struct paint_visitor: 
 	protected Log<paint_visitor>,
-	public abstract_visitor
+	public visits<area>,
+	public visits<ship>
 {	
-	paint_visitor( render_collection_t& input, result_collection_t& output, const paint_config& = paint_config() );
+	paint_visitor( result_collection_t& res, const paint_config& = paint_config() );
 
-	// one visitor for all paints
-	template<class T>
-	void visit(const T* obj) { require(obj); paint( *obj ); }
-
-	// painting methodes
+	// by default warn, if no overload for object detected
 	template<class T>
 	void paint(const T&) 
 	{
-		log.warn("Painting for: `" + boost::typeindex::type_id<T>().pretty_name() + "` not defined."); 
+		Log<paint_visitor>::get_logger().warn("Painting for: `" + boost::typeindex::type_id<T>().pretty_name() + "` is not defined."); 
 	}
 
-private:
+	void paint(const area&);
+	void paint(const ship&);
 
+	// override visitors for all supported paints
+	virtual void visit(ship* obj) override { require(obj); paint( *obj ); results.wait_push( std::shared_ptr<sf::RectangleShape>( config.end_element) ); }
+	virtual void visit(area* obj) override { require(obj); paint( *obj ); results.wait_push( std::shared_ptr<sf::RectangleShape>( config.end_element) ); }
+
+protected:
+
+	result_collection_t& results;
 	paint_config config;
-
-	pixel_coord get_point_position(const point& sh) const;
+	pixel_coord get_point_position(const point&) const;
 };
+

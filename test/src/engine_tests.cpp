@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(engine_test_1)
 		 area{width, height, max_ships, ship_collection_2}}};
 	const std::vector<area> init_correct_areas{
 		{area{width, height, max_ships, ship_collection_1},
-		 area{width, height, max_ships, ship_collection_2}}};
+		area{width, height, max_ships, ship_collection_2}}};
 
 	CHECK_ASSERTION(engine{init_bad_areas_1}, requirements_not_satisfied);
 	CHECK_ASSERTION(engine{init_bad_areas_2}, requirements_not_satisfied);

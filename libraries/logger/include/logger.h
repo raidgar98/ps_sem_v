@@ -20,7 +20,7 @@ public:
 	using format_function = std::function<std::ostream &(std::ostream &)>;
 
 	template <class T>
-	inline static logger get_logger(const char * alternative = "unknown")
+	inline static logger _get_logger(const char * alternative = "unknown")
 	{
 		const std::string name = boost::typeindex::type_id<T>().pretty_name();
 		for(const char c : name)
@@ -76,5 +76,10 @@ template <typename T>
 class Log
 {
 public:
-	inline static logger log = logger::get_logger<T>();
+	inline static logger log = logger::_get_logger<T>();
+
+	static logger& get_logger()
+	{
+		return Log<T>::log;
+	}
 };

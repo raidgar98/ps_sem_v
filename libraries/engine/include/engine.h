@@ -23,6 +23,10 @@ public:
 	// switches players, returns false if shoot wasn't performed or if win occurs
 	bool next_turn();
 
+	// returns current player
+	const area& current() const;
+	area& current();
+
 protected:
 
 	players_container_t players;

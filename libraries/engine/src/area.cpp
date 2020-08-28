@@ -17,24 +17,24 @@ bool area::add_ship(const ship &s)
 {
 	if (ships.size() == max_ships)
 	{
-		log.warn("failed adding ship because of limit");
+		Log<area>::get_logger().warn("failed adding ship because of limit");
 		return false;
 	}
 	if (std::max(s.get_p1().x, s.get_p2().x) > x_dim)
 	{
-		log.warn("failed adding ship because, ship is too wide in x dimension");
+		Log<area>::get_logger().warn("failed adding ship because, ship is too wide in x dimension");
 		return false;
 	}
 	if (std::max(s.get_p1().y, s.get_p2().y) > y_dim)
 	{
-		log.warn("failed adding ship because, ship is too wide in y dimension");
+		Log<area>::get_logger().warn("failed adding ship because, ship is too wide in y dimension");
 		return false;
 	}
 
 	for (const auto &sh : ships)
 		if (ship::collision(sh, s))
 		{
-			log.warn("failed adding ship. Detected collision with existing one");
+			Log<area>::get_logger().warn("failed adding ship. Detected collision with existing one");
 			return false;
 		}
 
@@ -60,9 +60,9 @@ unumber area::count_alive() const
 	return std::count_if(ships.begin(), ships.end(), [](const ship &s) { return s.is_alive(); });
 }
 
-void area::accept( abstract_visitor* v )
+void area::accept( visits<area>* v )
 {
 	v->visit(this);
 	for( ship& sh : this->ships )
-		sh.accept( v );
+		sh.accept( dynamic_cast<visits<ship>*>(v) );
 }

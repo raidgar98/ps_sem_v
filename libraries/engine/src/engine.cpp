@@ -48,3 +48,13 @@ bool engine::next_turn()
 	current_player++;
 	return current_player != manager.end();
 }
+
+const area& engine::current() const
+{
+	return current_player.get();
+}
+
+area& engine::current()
+{
+	return *current_player;
+}

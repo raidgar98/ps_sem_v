@@ -1,7 +1,7 @@
 project(components CXX)
 
 # Boost
-find_package(Boost 1.70 REQUIRED COMPONENTS lockfree )
+find_package(Boost 1.70 REQUIRED COMPONENTS thread )
 
 # SFML
 find_package(SFML 2.5 COMPONENTS graphics audio window system REQUIRED)
@@ -30,7 +30,7 @@ create_library( paint_config ${SFML_LIBRARIES_TO_LINK} types )
 create_library( painter
 
 	paint_config
-	${Boost_LOCKFREE_LIBRARY}
+	${Boost_THREAD_LIBRARY}
 
 	visitor
 

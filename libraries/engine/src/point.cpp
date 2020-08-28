@@ -5,7 +5,7 @@
 
 floating point::distance(const point &p1, const point &p2)
 {
-	auto pow = std::pow<double, double>;
+	auto pow = std::pow<float, float>;
 	const number a_1 = p1.x - p2.x;
 	const number b_1 = p1.y - p2.y;
 	return std::sqrt(pow(a_1, 2.0) + pow(b_1, 2.0));

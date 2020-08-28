@@ -11,6 +11,8 @@ using pixel_coord = sf::Vector2<floating>;
 
 struct paint_config
 {
+	sf::RectangleShape* end_element = nullptr;
+
 	enum{
 		FIXED,
 		RANDOM
@@ -33,8 +35,22 @@ struct paint_config
 	pixel_number ship_rows{ 20.0 };
 	pixel_number ship_cols{ 20.0 };
 
-	constexpr pixel_number get_cell_width() const;
-	constexpr pixel_number get_cell_height() const;
+	
+	constexpr pixel_number get_cell_width() const
+	{
+		const pixel_number width_without_margins{ area_width - (2.0f * margin) };
+		const pixel_number width_without_padding{ width_without_margins - ( ( ship_cols - 1.0f ) * padding ) };
+		const pixel_number cell_width{ width_without_padding / ship_cols };
+		return cell_width;
+	}
+
+	constexpr pixel_number get_cell_height() const
+	{
+		const pixel_number height_without_margins{ area_height - (2.0f * margin) };
+		const pixel_number height_without_padding{ height_without_margins - ( ( ship_rows - 1.0f ) * padding ) };
+		const pixel_number cell_height{ height_without_padding / ship_rows };
+		return cell_height;
+	}
 
 	sf::Color get_ship_color() const;
 };

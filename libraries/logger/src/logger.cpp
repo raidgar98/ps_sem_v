@@ -45,7 +45,7 @@ void logger::print_out(const std::string &msg, const format_function &_format) c
 	_format(std::cout);
 	std::cout << msg << std::endl;
 	logger::reset_color_scheme(std::cout);
-	std::cout << '\0';
+	std::cout << "";
 }
 
 void logger::dbg(const std::string & msg) const
@@ -70,7 +70,7 @@ void logger::error(const std::string & msg) const
 
 bool logger::set_dump_file( const std::string& file )
 {
-	logger logg = logger::get_logger<logger>("logger");
+	logger logg = logger::_get_logger<logger>("logger");
 
 	if(boost::filesystem::exists(boost::filesystem::path(file)))
 		logg.warn("File " + file + " will be deleted." );

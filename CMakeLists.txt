@@ -34,6 +34,10 @@ add_subdirectory(test)
 # add executable
 add_executable( ${EXECUTABLE_NAME} main.cpp )
 
+# setup threads
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 # setup SFML
 find_package(SFML 2.5 COMPONENTS graphics audio window system REQUIRED)
 set(
@@ -47,8 +51,11 @@ set(
 # link required libraries to main program
 target_link_libraries( ${EXECUTABLE_NAME}
 
+	Threads::Threads
+
 	${SFML_LIBRARIES_TO_LINK}
 
-	point
+	painter
+	engine
 )
 

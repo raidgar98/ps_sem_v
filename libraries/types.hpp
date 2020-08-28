@@ -4,7 +4,7 @@
 
 using number = long int;
 using unumber = unsigned long int;
-using floating = double;
+using floating = float;
 
 struct requirements_not_satisfied : std::exception
 {

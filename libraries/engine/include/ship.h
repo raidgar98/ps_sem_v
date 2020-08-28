@@ -9,8 +9,8 @@
 #include "../../patterns/include/visitor.hpp"
 
 class ship : 
-	private Log<ship>, 
-	public Visitable<>
+	public Visitable<ship>,
+	private Log<ship>
 {
 public:
 

@@ -1,24 +1,38 @@
 #pragma once
 
+// DOUBLE CRTP COMBO !!! 
+// Where is your Java and C# now?
+
+// STL
+#include <cassert>
+#include <memory>
+
 // Boost
 #include <boost/core/demangle.hpp>
 
+// Project includes
+#include "../../logger/include/logger.h"
 
-class abstract_visitor
+template<typename T>
+class visits : private Log< visits<T> >
 {
 public:
-	// default visitor (do nothing)
-	template<typename T>
-	void visit(T * ptr) {  }
+	// default visitor (throw error)
+	virtual void visit(T * ptr) 
+	{ 
+		Log<visits<T>>::get_logger().error("Empty visit, by: `" + boost::typeindex::type_id<T>().pretty_name() + "`." );
+		assert(false);
+	}
 };
 
-template<class minimum_visitor = abstract_visitor>
-class Visitable
+template<class T >
+class Visitable : private Log< Visitable < T > >
 {
 public:
 
-	virtual void accept( minimum_visitor* v )
+	virtual void accept( visits<T>* v )
 	{
-		v->visit( this );
+		Log< Visitable < T > >::get_logger().info( "Accepted: `" + boost::typeindex::type_id<T>().pretty_name() + "`." );
+		v->visit( dynamic_cast<T*>(this) );
 	}
 };

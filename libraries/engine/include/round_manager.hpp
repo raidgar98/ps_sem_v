@@ -32,6 +32,16 @@ public:
 			std::advance(it, nm);
 			return *it;
 		}
+
+		const round_manager::value_type &get() const
+		{
+			// round_iterator::log << nm;
+			require(nm >= 0);
+			auto it = mgr.players.begin();
+			std::advance(it, nm);
+			return *it;
+		}
+
 		round_manager::value_type &operator->()
 		{
 			require(nm >= 0);

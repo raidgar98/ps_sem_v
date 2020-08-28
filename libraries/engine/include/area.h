@@ -8,7 +8,7 @@
 
 class area : 
 	private Log<area>,
-	public Visitable<>
+	public Visitable<area>
 {
 public:
 
@@ -16,11 +16,12 @@ public:
 	unumber count_alive() const;
 	bool add_ship(const ship&);
 	const std::vector<ship>& get_ships() const;
+
 	// returns x dimension, y dimension and maximum number of ships
 	std::tuple<unumber, unumber, unumber> get_params() const { return {x_dim, y_dim, max_ships}; }
 
 	static bool shoot(area&, const point&);
-	virtual void accept( abstract_visitor* v ) override;
+	virtual void accept( visits<area>* v ) override;
 
 private:
 

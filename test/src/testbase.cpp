@@ -2,7 +2,7 @@
 
 namespace testbase
 {
-	logger TestLogger::log = logger::get_logger<TestLogger>("TestLogger");
+	logger TestLogger::log = logger::_get_logger<TestLogger>("TestLogger");
 
 	void add_ship( area& a, const ship& s, const bool success)
 	{
