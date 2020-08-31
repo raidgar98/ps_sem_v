@@ -70,18 +70,8 @@ int main()
 			std::shared_ptr<sf::RectangleShape> shape;
 			results.wait_pull(shape);
 
-			if(shape == nullptr)
-			{
-				i+=1;
-				Log<engine>::get_logger() << std::to_string(i) + " / " + std::to_string(end_count);
-			}
-			else
-			{
-				Log<engine>::get_logger() << i;
-				Log<engine>::get_logger() << shape->getPosition();
-				Log<engine>::get_logger() << shape->getSize();
-				window.draw(*shape);
-			}
+			if(shape == nullptr) i+=1;
+			else window.draw(*shape);
 		}
 		window.display();
 	}

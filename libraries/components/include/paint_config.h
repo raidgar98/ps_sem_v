@@ -5,11 +5,12 @@
 
 // Project includes
 #include "../../types.hpp"
+#include "config.h"
 
 using pixel_number = floating;
 using pixel_coord = sf::Vector2<floating>;
 
-struct paint_config
+struct paint_config : public config
 {
 	sf::RectangleShape* end_element = nullptr;
 

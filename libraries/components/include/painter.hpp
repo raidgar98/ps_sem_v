@@ -4,9 +4,8 @@
 #include <boost/thread/sync_queue.hpp>
 
 // Project includes
-#include "paint_config.h"
+#include "geometry_visitor.h"
 #include "../../logger/include/logger.h"
-#include "../../patterns/include/visitor.hpp"
 
 // Project includes
 #include "../../engine/include/point.h"
@@ -19,10 +18,11 @@ using result_collection_t = threadsafe_collection_type< std::shared_ptr<sf::Rect
 
 struct paint_visitor: 
 	protected Log<paint_visitor>,
+	public configurable,
 	public visits<area>,
 	public visits<ship>
 {	
-	paint_visitor( result_collection_t& res, const paint_config& = paint_config() );
+	paint_visitor( result_collection_t& res, paint_config& );
 
 	// by default warn, if no overload for object detected
 	template<class T>
@@ -41,7 +41,6 @@ struct paint_visitor:
 protected:
 
 	result_collection_t& results;
-	paint_config config;
 	pixel_coord get_point_position(const point&) const;
 };
 
