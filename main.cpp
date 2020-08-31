@@ -13,15 +13,16 @@ int main()
 {
 	constexpr unumber width = 10;
 	constexpr unumber height = 10;
-	constexpr unumber max_ships = 2;
+	constexpr unumber max_ships = 3;
 
 	const std::vector<ship> ship_collection_1{
-		{ship{point{1, 1}, point{5, 1}},
-		ship{point{1, 4}, point{5, 4}}}};
+		{ship{point{0, 0}, point{0, 10}},
+		ship{point{1, 0}, point{1, 10}},
+		ship{point{10, 0}, point{10, 10}}}};
 
 	const std::vector<ship> ship_collection_2{
-		{ship{point{1, 6}, point{5, 6}},
-		ship{point{1, 8}, point{5, 8}}}};
+		{ship{point{3, 0}, point{3, 10}},
+		ship{point{7,0}, point{7, 10}}}};
 
 	const std::vector<area> init_correct_areas{
 		{area{width, height, max_ships, ship_collection_1},
@@ -30,6 +31,7 @@ int main()
 	paint_config config;
 	config.ship_cols = width + 1;
 	config.ship_rows = height + 1;
+	config.begin = pixel_coord( 10.0f, 10.0f );
 
 	result_collection_t results;
 	paint_visitor pvisit{ results, config };
@@ -75,12 +77,13 @@ int main()
 			}
 			else
 			{
+				Log<engine>::get_logger() << i;
+				Log<engine>::get_logger() << shape->getPosition();
+				Log<engine>::get_logger() << shape->getSize();
 				window.draw(*shape);
-				// window.display();
 			}
 		}
 		window.display();
-
 	}
 
 	return 0;

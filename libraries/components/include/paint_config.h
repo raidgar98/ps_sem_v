@@ -54,3 +54,9 @@ struct paint_config
 
 	sf::Color get_ship_color() const;
 };
+
+inline std::ostream& operator<<(std::ostream& os, const pixel_coord& coord)
+{
+	os << "(" << coord.x << ", " << coord.y << ")";
+	return os;
+}

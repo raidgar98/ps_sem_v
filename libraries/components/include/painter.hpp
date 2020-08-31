@@ -35,8 +35,8 @@ struct paint_visitor:
 	void paint(const ship&);
 
 	// override visitors for all supported paints
-	virtual void visit(ship* obj) override { require(obj); paint( *obj ); results.wait_push( std::shared_ptr<sf::RectangleShape>( config.end_element) ); }
-	virtual void visit(area* obj) override { require(obj); paint( *obj ); results.wait_push( std::shared_ptr<sf::RectangleShape>( config.end_element) ); }
+	virtual void visit(ship* obj) override { require(obj); paint( *obj ); }
+	virtual void visit(area* obj) override { require(obj); paint( *obj ); }
 
 protected:
 

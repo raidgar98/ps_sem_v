@@ -44,3 +44,13 @@ private:
 	static centric_type _ship_centricion( const ship&, const ship& );
 
 };
+
+inline std::ostream& operator<<(std::ostream& os, const ship& sh)
+{
+	os << "ship[";
+	const auto* points = point::points_on_distance( sh.get_p1(), sh.get_p2() );
+	for(const point& p : *points)
+		os << p << ",";
+	os << "]";
+	return os;
+}

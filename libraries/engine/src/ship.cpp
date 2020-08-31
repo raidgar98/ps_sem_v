@@ -18,7 +18,8 @@ ship::ship(const point &pp1, const point &pp2)
 
 number ship::length() const
 {
-	return point::distance(p1, p2) + std::max(1ul, (std::max(p1.y, p2.y) - std::min(p1.y, p2.y)));
+	// const unumber y_max = std::max(1ul, (std::max(p1.y, p2.y) - std::min(p1.y, p2.y))); // + to ret
+	return point::distance(p1, p2) + 1ul;
 }
 
 bool ship::is_alive() const
