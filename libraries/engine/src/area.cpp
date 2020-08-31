@@ -60,9 +60,11 @@ unumber area::count_alive() const
 	return std::count_if(ships.begin(), ships.end(), [](const ship &s) { return s.is_alive(); });
 }
 
-void area::accept( visits<area>* v )
+bool area::accept( visits<area>* v )
 {
-	v->visit(this);
+	bool ret = true;
+	ret &= v->visit(this);
 	for( ship& sh : this->ships )
-		sh.accept( dynamic_cast<visits<ship>*>(v) );
+		ret &= sh.accept( dynamic_cast<visits<ship>*>(v) );
+	return ret;
 }

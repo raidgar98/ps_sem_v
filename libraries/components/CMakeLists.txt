@@ -28,15 +28,17 @@ ENDMACRO()
 
 create_library( config types )
 create_library( paint_config config ${SFML_LIBRARIES_TO_LINK} )
-create_library( geometry_visitor paint_config visitor )
+create_library( geometry_visitor paint_config visitor point )
 create_library( painter
 
-	paint_config
 	${Boost_THREAD_LIBRARY}
 
+	paint_config
 	geometry_visitor
 
 	ship
 	area
 
 )
+
+create_library( click_detector geometry_visitor )

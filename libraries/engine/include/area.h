@@ -21,7 +21,7 @@ public:
 	std::tuple<unumber, unumber, unumber> get_params() const { return {x_dim, y_dim, max_ships}; }
 
 	static bool shoot(area&, const point&);
-	virtual void accept( visits<area>* v ) override;
+	virtual bool accept( visits<area>* v ) override;
 
 private:
 

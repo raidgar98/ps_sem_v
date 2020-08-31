@@ -1,16 +1,7 @@
 #include "../include/painter.hpp"
 
-constexpr floating round(const floating n, const number digits = 2ul)
-{
-	const long long int ret = std::pow<floating, number>( 10.0f, digits ) * n;
-	return static_cast<floating>(ret) / std::pow<floating, number>( 10.0f, digits );
-};
-
 paint_visitor::paint_visitor(result_collection_t &res, paint_config &cnfig)
-	: results{res} 
-	{
-		_config = &cnfig;
-	}
+	: geometry_visitor{cnfig}, results{res} {}
 
 void paint_visitor::paint(const area &obj)
 {
@@ -40,7 +31,7 @@ void paint_visitor::paint(const ship &obj)
 	
 	for (point &p : *points_to_paint)
 	{
-		const pixel_coord coord{get_point_position(p)};
+		const pixel_coord coord{ get_point_position(p) };
 		sf::RectangleShape* cell = new sf::RectangleShape{};
 		cell->setPosition({coord.x, coord.y});
 		cell->setSize({cell_width, cell_height});
@@ -53,19 +44,4 @@ void paint_visitor::paint(const ship &obj)
 		results.wait_push( std::shared_ptr<sf::RectangleShape>( cfg->end_element) );
 	}
 	Log<paint_visitor>::get_logger().info("Painting ship finished");
-}
-
-pixel_coord paint_visitor::get_point_position(const point &p) const
-{
-	const paint_config* cfg = get_config<paint_config>();
-	const pixel_coord top_left{
-		cfg->begin.x + cfg->margin + cfg->padding,
-		cfg->begin.y + cfg->margin + cfg->padding
-	};
-
-	if (p == point{0, 0}) return top_left;
-	else return pixel_coord{
-			round( top_left.x + (cfg->get_cell_width() * p.x) + (cfg->padding * ( p.x == 0ul ? 0.0f : 1.0f ) * ( p.x == 0ul ? 0.0f : p.x )), 2l ),
-			round( top_left.y + (cfg->get_cell_height() * p.y) + (cfg->padding * ( p.y == 0ul ? 0.0f : 1.0f ) * ( p.y == 0ul ? 0.0f : p.y )), 2l )
-		};
 }

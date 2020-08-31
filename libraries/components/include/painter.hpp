@@ -5,10 +5,8 @@
 
 // Project includes
 #include "geometry_visitor.h"
-#include "../../logger/include/logger.h"
 
 // Project includes
-#include "../../engine/include/point.h"
 #include "../../engine/include/ship.h"
 #include "../../engine/include/area.h"
 
@@ -18,7 +16,7 @@ using result_collection_t = threadsafe_collection_type< std::shared_ptr<sf::Rect
 
 struct paint_visitor: 
 	protected Log<paint_visitor>,
-	public configurable,
+	public geometry_visitor,
 	public visits<area>,
 	public visits<ship>
 {	
@@ -35,12 +33,11 @@ struct paint_visitor:
 	void paint(const ship&);
 
 	// override visitors for all supported paints
-	virtual void visit(ship* obj) override { require(obj); paint( *obj ); }
-	virtual void visit(area* obj) override { require(obj); paint( *obj ); }
+	virtual bool visit(ship* obj) override { require(obj); paint( *obj ); return true; }
+	virtual bool visit(area* obj) override { require(obj); paint( *obj ); return true; }
 
 protected:
 
 	result_collection_t& results;
-	pixel_coord get_point_position(const point&) const;
 };
 

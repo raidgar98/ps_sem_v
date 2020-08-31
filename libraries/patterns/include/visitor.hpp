@@ -18,7 +18,7 @@ class visits : private Log< visits<T> >
 {
 public:
 	// default visitor (throw error)
-	virtual void visit(T * ptr) 
+	virtual bool visit(T * ptr) 
 	{ 
 		Log<visits<T>>::get_logger().error("Empty visit, by: `" + boost::typeindex::type_id<T>().pretty_name() + "`." );
 		assert(false);
@@ -30,9 +30,9 @@ class Visitable : private Log< Visitable < T > >
 {
 public:
 
-	virtual void accept( visits<T>* v )
+	virtual bool accept( visits<T>* v )
 	{
 		Log< Visitable < T > >::get_logger().info( "Accepted: `" + boost::typeindex::type_id<T>().pretty_name() + "`." );
-		v->visit( dynamic_cast<T*>(this) );
+		return v->visit( dynamic_cast<T*>(this) );
 	}
 };

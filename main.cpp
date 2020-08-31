@@ -13,11 +13,12 @@ int main()
 {
 	constexpr unumber width = 10;
 	constexpr unumber height = 10;
-	constexpr unumber max_ships = 3;
+	constexpr unumber max_ships = 4;
 
 	const std::vector<ship> ship_collection_1{
 		{ship{point{0, 0}, point{0, 10}},
 		ship{point{1, 0}, point{1, 10}},
+		ship{point{3, 4}, point{6, 4}},
 		ship{point{10, 0}, point{10, 10}}}};
 
 	const std::vector<ship> ship_collection_2{
@@ -42,7 +43,6 @@ int main()
 
 	// sf::CircleShape shape(100.f);
 	// shape.setFillColor(sf::Color::Green);
-
 	while (window.isOpen())
 	{
 		sf::Event event;
