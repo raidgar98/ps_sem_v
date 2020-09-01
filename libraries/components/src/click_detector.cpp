@@ -22,11 +22,7 @@ bool click_detection_visitor::visit(ship *obj)
 			if( detect_collision( _p, _p ) )
 			{
 				Log<click_detection_visitor>::get_logger().info("click detected!");
-				if(obj->hit(p))
-				{
-					ship_callback(obj, _p);
-					return true;
-				}else return false;
+				this->ship_callback(obj, p, _p);
 			}
 		}
 	}

@@ -40,8 +40,17 @@ int main()
 	result_collection_t results;
 	paint_visitor pvisit{ results, config };
 	click_detection_visitor cdvisit{ config };
-	cdvisit.ship_callback = [&](ship* s, const pixel_coord& pc){
-		eng.next_turn();
+	cdvisit.ship_callback = [&](ship* s, const point& p, const pixel_coord& pc)
+	{
+		if(area::shoot( eng.current(), p )) 
+		{
+			Log<engine>::get_logger() << "shot success";
+			eng.next_turn();
+		}
+		else
+		{
+			Log<engine>::get_logger() << "shot failed";
+		}
 	};
 
 	sf::RenderWindow window(sf::VideoMode(config.area_width + 100, config.area_height + 100), "Ship game");
@@ -58,19 +67,13 @@ int main()
 				window.close();
 			else if( event.type == sf::Event::MouseButtonPressed and event.mouseButton.button == sf::Mouse::Button::Left )
 			{
-				std::future<void> _ = std::async( std::launch::async, [&]()->void{
-
-					cdvisit.click = pixel_coord{
-						static_cast<floating>(event.mouseButton.x),
-						static_cast<floating>(event.mouseButton.y)
-					};
+				std::future<void> _ = std::async( std::launch::async, [&]()->void
+				{
+					cdvisit.click = window.mapPixelToCoords( sf::Vector2i{event.mouseButton.x,event.mouseButton.y} );
 					eng.current().accept( &cdvisit );
-
 				});
 			}
 		}
-
-		window.clear();
 
 		const unumber end_count = 1 + [&]() -> unumber { 
 			unumber ret = 0;
@@ -82,6 +85,8 @@ int main()
 		std::future<void> ret{ std::async( std::launch::async, [&]() -> void {
 			eng.current().accept( &pvisit );
 		})};
+
+		window.clear();
 
 		for(int i = 0; i < end_count;)
 		{

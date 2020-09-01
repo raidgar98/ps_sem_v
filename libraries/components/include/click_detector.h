@@ -16,7 +16,7 @@ class click_detection_visitor :
 public:
 
 	pixel_coord click;
-	std::function<void(ship*, const pixel_coord&)> ship_callback;
+	std::function<void(ship*, const point&, const pixel_coord&)> ship_callback;
 
 	explicit click_detection_visitor( paint_config& );
 	virtual bool visit(ship *obj) override;
