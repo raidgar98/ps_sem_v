@@ -1,4 +1,4 @@
-#include "../include/painter.hpp"
+#include "../include/painter.h"
 
 paint_visitor::paint_visitor(result_collection_t &res, paint_config &cnfig)
 	: geometry_visitor{cnfig}, results{res} {}
@@ -35,7 +35,7 @@ void paint_visitor::paint(const ship &obj)
 		sf::RectangleShape* cell = new sf::RectangleShape{};
 		cell->setPosition({coord.x, coord.y});
 		cell->setSize({cell_width, cell_height});
-		cell->setFillColor(ship_color);
+		cell->setFillColor( obj.segment_alive(p) ? ship_color : sf::Color::Red);
 		cell->setOutlineColor(cfg->ship_outline_color);
 		cell->setOutlineThickness( cfg->outline_width );
 

@@ -20,8 +20,8 @@ public:
 	// default visitor (throw error)
 	virtual bool visit(T * ptr) 
 	{ 
-		Log<visits<T>>::get_logger().error("Empty visit, by: `" + boost::typeindex::type_id<T>().pretty_name() + "`." );
-		assert(false);
+		Log<visits<T>>::get_logger().warn("Empty visit, by: `" + boost::typeindex::type_id<T>().pretty_name() + "`." );
+		return true;
 	}
 };
 

@@ -5,19 +5,23 @@
 
 // Project includes
 #include "../../engine/include/ship.h"
+#include "../../engine/include/area.h"
 
-class click_detection_visitor : public Log<click_detection_visitor>,
-								public geometry_visitor,
-								public visits<ship>
+class click_detection_visitor : 
+	public Log<click_detection_visitor>,
+	public geometry_visitor,
+	public visits<ship>,
+	public visits<area>	// dummy
 {
 public:
-	const pixel_coord click;
-	virtual bool visit(ship *obj) override
-	{
-		require(obj);
-		return detect_collision(get_point_position(obj->get_p1()), get_point_position(obj->get_p2()));
-	}
 
-private:
+	pixel_coord click;
+	std::function<void(ship*, const pixel_coord&)> ship_callback;
+
+	explicit click_detection_visitor( paint_config& );
+	virtual bool visit(ship *obj) override;
+
+protected:
+
 	bool detect_collision(const pixel_coord &p1, const pixel_coord &p2) const;
 };

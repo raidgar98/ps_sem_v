@@ -5,7 +5,8 @@
 #include <SFML/Graphics.hpp>
 
 // Project Includes
-#include "libraries/components/include/painter.hpp"
+#include "libraries/components/include/painter.h"
+#include "libraries/components/include/click_detector.h"
 #include "libraries/engine/include/engine.h"
 #include "libraries/engine/include/area.h"
 
@@ -34,15 +35,20 @@ int main()
 	config.ship_rows = height + 1;
 	config.begin = pixel_coord( 10.0f, 10.0f );
 
+	engine eng{ init_correct_areas };
+
 	result_collection_t results;
 	paint_visitor pvisit{ results, config };
-
-	engine eng{ init_correct_areas };
+	click_detection_visitor cdvisit{ config };
+	cdvisit.ship_callback = [&](ship* s, const pixel_coord& pc){
+		eng.next_turn();
+	};
 
 	sf::RenderWindow window(sf::VideoMode(config.area_width + 100, config.area_height + 100), "Ship game");
 
 	// sf::CircleShape shape(100.f);
 	// shape.setFillColor(sf::Color::Green);
+	window.setFramerateLimit(20);
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -50,6 +56,18 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+			else if( event.type == sf::Event::MouseButtonPressed and event.mouseButton.button == sf::Mouse::Button::Left )
+			{
+				std::future<void> _ = std::async( std::launch::async, [&]()->void{
+
+					cdvisit.click = pixel_coord{
+						static_cast<floating>(event.mouseButton.x),
+						static_cast<floating>(event.mouseButton.y)
+					};
+					eng.current().accept( &cdvisit );
+
+				});
+			}
 		}
 
 		window.clear();

@@ -36,7 +36,7 @@ bool ship::hit(const point &p)
 {
 	if (not(point::centric(p1, p) or point::centric(p2, p)))
 		return false;
-	if (point::in_area(p1, p2, p) and hits.find(p) == hits.end())
+	if (point::in_area(p1, p2, p) and segment_alive(p))
 	{
 		_apply_hit(p);
 		Log<ship>::get_logger().dbg("Ship hit ( " + std::to_string(p.x) + " , " + std::to_string(p.y) + " )");
@@ -44,6 +44,11 @@ bool ship::hit(const point &p)
 	}
 	else
 		return false;
+}
+
+bool ship::segment_alive(const point& p) const
+{
+	return hits.find(p) == hits.end();
 }
 
 void ship::_apply_hit(const point &p)

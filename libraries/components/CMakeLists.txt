@@ -41,4 +41,4 @@ create_library( painter
 
 )
 
-create_library( click_detector geometry_visitor )
+create_library( click_detector geometry_visitor ship area )

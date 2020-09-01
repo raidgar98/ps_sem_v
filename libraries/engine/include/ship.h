@@ -20,6 +20,7 @@ public:
 	number hits_left() const;
 
 	bool hit(const point& p);
+	bool segment_alive(const point&) const;
 	static bool collision(const ship& sh1, const ship& sh2);
 
 	const point& get_p1() const { return p1; }
