@@ -22,11 +22,17 @@ public:
 	using player_tries_collection_t = std::set<player_try>;
 private:
 
-
 	area board;
 	player_tries_collection_t player_tries;
 
 public:
+
+	enum shoot_type
+	{
+		CORRECT,
+		MISS,
+		ERROR
+	};
 
 	player(const area&);
 
@@ -35,7 +41,7 @@ public:
 	const area& get_area() const;
 	const player_tries_collection_t& get_player_tries() const;
 
-	bool shoot(player&, const point&);
+	shoot_type shoot(player&, const point&);
 
 	virtual bool accept(visits<player>*);
 };

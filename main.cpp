@@ -44,7 +44,8 @@ int main()
 	click_detection_visitor cdvisit{ config };
 	cdvisit.ship_callback = [&](ship* s, const point& p, const pixel_coord& pc)
 	{
-		if(eng.shoot(p) || s == nullptr) 
+		Log<engine>::get_logger() << p;
+		if(eng.shoot(p)) 
 		{
 			Log<engine>::get_logger() << "shot success";
 			return true;
@@ -84,10 +85,10 @@ int main()
 
 						if(not _hit)
 						{
-							eng.current().accept( &cdvisit );
+							_hit = eng.current().accept( &cdvisit );
 						}
 
-						eng.next_turn();
+						if(_hit) eng.next_turn();
 					}
 				});
 			}

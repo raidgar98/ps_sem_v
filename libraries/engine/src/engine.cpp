@@ -33,8 +33,13 @@ engine::engine(const players_container_t& _players)
 bool engine::shoot(const point& _p)
 {
 	if( shoot_performed ) return false;
-	shoot_performed = true;
-	return ( *current_player ).shoot( (*(current_player).next()), _p );
+	player::shoot_type result = ( *current_player ).shoot( (*(current_player).next()), _p );
+	if(result == player::shoot_type::ERROR) return false;
+	else
+	{
+		shoot_performed = true;
+		return true;
+	}
 }
 
 bool engine::win() const
