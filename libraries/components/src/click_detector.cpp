@@ -21,7 +21,7 @@ bool click_detection_visitor::visit(ship *obj)
 			const pixel_coord _p = get_point_position(p);
 			if( detect_collision( _p, _p ) )
 			{
-				Log<click_detection_visitor>::get_logger().info("click detected!");
+				Log<click_detection_visitor>::get_logger().info("click on ship detected!");
 				this->ship_callback(obj, p, _p);
 			}
 		}

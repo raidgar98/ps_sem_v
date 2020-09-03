@@ -26,6 +26,7 @@ public:
 	// returns current player
 	const player& current() const;
 	player& current();
+	player& next();
 
 protected:
 

@@ -17,14 +17,14 @@ struct paint_config : public config
 	enum{
 		FIXED,
 		RANDOM
-	} ship_color_type = paint_config::RANDOM;
-	sf::Color ship_color;
+	} ship_color_type = paint_config::FIXED;
+	sf::Color ship_color = sf::Color::Green;
 	sf::Color ship_outline_color = sf::Color::Cyan;
 
 	sf::Color area_color = sf::Color::White;
 	sf::Color area_outline_color = sf::Color::Black;
 
-	sf::Color cell_missed = sf::Color::Cyan;
+	sf::Color cell_missed = sf::Color::Blue;
 	sf::Color cell_hitted = sf::Color::Red;
 	sf::Color cell_neutral = sf::Color::White;
 

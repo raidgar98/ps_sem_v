@@ -47,7 +47,6 @@ int main()
 		if(eng.shoot(p)) 
 		{
 			Log<engine>::get_logger() << "shot success";
-			eng.next_turn();
 		}
 		else
 		{
@@ -72,17 +71,29 @@ int main()
 				std::future<void> _ = std::async( std::launch::async, [&]()->void
 				{
 					cdvisit.click = window.mapPixelToCoords( sf::Vector2i{event.mouseButton.x,event.mouseButton.y} );
-					eng.current().get_area().accept( &cdvisit );
+					if(eng.current().get_area().accept( &cdvisit ))
+					{
+						for(ship& sh : eng.next().get_area().get_ships())
+							if(sh.accept(&cdvisit)) break;
+
+						require(eng.next_turn());
+					}
 				});
 			}
 		}
 
-		const unumber end_count = 1 + eng.current().get_player_tries().size();
+		const unumber end_count = 1 + eng.current().get_player_tries().size() + [&]() -> unumber { 
+			return 0;
+			unumber ret = 0;
+			for(const auto& v : eng.current().get_area().get_ships())
+				ret += v.length();
+			return ret;
+		}();
 
 		std::future<void> ret{ std::async( std::launch::async, [&]() -> void {
-			eng.current().accept( &pvisit );
 			eng.current().get_area().accept( &pvisit );
-			eng.current().get_area().for_each_ship( [&](ship& sh) { sh.accept(&pvisit); } );
+			// eng.current().get_area().for_each_ship( [&](ship& sh) { sh.accept(&pvisit); } );
+			eng.current().accept( &pvisit );
 		})};
 
 		window.clear();

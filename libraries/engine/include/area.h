@@ -16,6 +16,7 @@ public:
 	unumber count_alive() const;
 	bool add_ship(const ship&);
 	const std::vector<ship>& get_ships() const;
+	std::vector<ship>& get_ships();
 	void for_each_ship(std::function<void(ship&)>);
 
 	// returns x dimension, y dimension and maximum number of ships

@@ -47,6 +47,11 @@ const std::vector<ship> &area::get_ships() const
 	return ships;
 }
 
+std::vector<ship> &area::get_ships()
+{
+	return ships;
+}
+
 bool area::shoot(area &a, const point &p)
 {
 	for (ship &s : a.ships)

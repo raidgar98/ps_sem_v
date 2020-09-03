@@ -59,3 +59,8 @@ player& engine::current()
 {
 	return *current_player;
 }
+
+player& engine::next()
+{
+	return *(current_player.next());
+}

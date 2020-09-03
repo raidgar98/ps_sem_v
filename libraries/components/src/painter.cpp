@@ -15,9 +15,38 @@ void paint_visitor::paint(const area &obj)
 	board->setOutlineColor(cfg->area_outline_color);
 	board->setOutlineThickness(cfg->outline_width);
 
-	Log<paint_visitor>::get_logger().info("Painting area finished");
 	results.wait_push(std::make_shared<sf::RectangleShape>(*board));
+	const floating cell_width{cfg->get_cell_width()};
+	const floating cell_height{cfg->get_cell_height()};
+	const auto [_width, _height, _max_ships] = obj.get_params();
+	const floating margin = 2.0f * cfg->margin;
+
+	for(unumber i = 0; i <= _width; i++)
+	{
+		const pixel_coord start = get_point_position(point{ i, 0 });
+		sf::RectangleShape *grid_x = new sf::RectangleShape{};
+		grid_x->setPosition( start );
+		grid_x->setSize( pixel_coord{ cell_width, cfg->area_height - margin } );
+		grid_x->setFillColor( sf::Color::Transparent );
+		grid_x->setOutlineColor(sf::Color::Black);
+		grid_x->setOutlineThickness(cfg->padding);
+		results.wait_push(std::shared_ptr<sf::RectangleShape>{grid_x});
+	}
+
+	for(unumber i = 0; i <= _height; i++)
+	{
+		const pixel_coord start = get_point_position(point{ 0, i });
+		sf::RectangleShape *grid_y = new sf::RectangleShape{};
+		grid_y->setPosition( start );
+		grid_y->setSize( pixel_coord{ cfg->area_width - margin, cell_height } );
+		grid_y->setFillColor( sf::Color::Transparent );
+		grid_y->setOutlineColor(sf::Color::Black);
+		grid_y->setOutlineThickness(cfg->padding);
+		results.wait_push(std::shared_ptr<sf::RectangleShape>{grid_y});
+	}
+
 	results.wait_push(std::shared_ptr<sf::RectangleShape>(cfg->end_element));
+	Log<paint_visitor>::get_logger().info("Painting area finished");
 }
 
 void paint_visitor::paint(const ship &obj)
@@ -25,8 +54,8 @@ void paint_visitor::paint(const ship &obj)
 	Log<paint_visitor>::get_logger().info("Painting ship started");
 	const paint_config *cfg = get_config<paint_config>();
 	std::unique_ptr<std::vector<point>> points_to_paint{point::points_on_distance(obj.get_p1(), obj.get_p2())};
-	const float cell_width{cfg->get_cell_width()};
-	const float cell_height{cfg->get_cell_height()};
+	const floating cell_width{cfg->get_cell_width()};
+	const floating cell_height{cfg->get_cell_height()};
 	const sf::Color ship_color{cfg->get_ship_color()};
 
 	for (point &p : *points_to_paint)
@@ -48,8 +77,8 @@ void paint_visitor::paint(const player &obj)
 
 	const paint_config *cfg = get_config<paint_config>();
 	const player::player_tries_collection_t &points_to_paint{obj.get_player_tries()};
-	const float cell_width{cfg->get_cell_width()};
-	const float cell_height{cfg->get_cell_height()};
+	const floating cell_width{cfg->get_cell_width()};
+	const floating cell_height{cfg->get_cell_height()};
 
 	for(const player_try& p : points_to_paint)
 	{
