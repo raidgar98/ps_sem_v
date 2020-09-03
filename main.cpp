@@ -44,13 +44,15 @@ int main()
 	click_detection_visitor cdvisit{ config };
 	cdvisit.ship_callback = [&](ship* s, const point& p, const pixel_coord& pc)
 	{
-		if(eng.shoot(p)) 
+		if(eng.shoot(p) || s == nullptr) 
 		{
 			Log<engine>::get_logger() << "shot success";
+			return true;
 		}
 		else
 		{
 			Log<engine>::get_logger() << "shot failed";
+			return false;
 		}
 	};
 
@@ -73,10 +75,19 @@ int main()
 					cdvisit.click = window.mapPixelToCoords( sf::Vector2i{event.mouseButton.x,event.mouseButton.y} );
 					if(eng.current().get_area().accept( &cdvisit ))
 					{
+						bool _hit = false;
 						for(ship& sh : eng.next().get_area().get_ships())
-							if(sh.accept(&cdvisit)) break;
+						{
+							_hit = sh.accept(&cdvisit);
+							if(_hit) break;
+						}
 
-						require(eng.next_turn());
+						if(not _hit)
+						{
+							eng.current().accept( &cdvisit );
+						}
+
+						eng.next_turn();
 					}
 				});
 			}

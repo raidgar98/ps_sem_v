@@ -6,21 +6,24 @@
 // Project includes
 #include "../../engine/include/ship.h"
 #include "../../engine/include/area.h"
+#include "../../engine/include/player.h"
 
 class click_detection_visitor : 
 	public Log<click_detection_visitor>,
 	public geometry_visitor,
 	public visits<ship>,
-	public visits<area>	
+	public visits<area>,
+	public visits<player>	
 {
 public:
 
 	pixel_coord click;
-	std::function<void(ship*, const point&, const pixel_coord&)> ship_callback;
+	std::function<bool(ship*, const point&, const pixel_coord&)> ship_callback;
 
 	explicit click_detection_visitor( paint_config& );
 	virtual bool visit(ship *obj) override;
 	virtual bool visit(area *obj) override;
+	virtual bool visit(player *obj) override;
 
 protected:
 

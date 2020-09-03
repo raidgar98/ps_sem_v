@@ -55,7 +55,7 @@ void logger::dbg(const std::string & msg) const
 
 void logger::info(const std::string & msg) const
 {
-	print_out( get_preambula(2) + msg, info_format );
+	// print_out( get_preambula(2) + msg, info_format );
 }
 
 void logger::warn(const std::string & msg) const

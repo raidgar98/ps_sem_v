@@ -22,11 +22,18 @@ bool click_detection_visitor::visit(ship *obj)
 			if( detect_collision( _p, _p ) )
 			{
 				Log<click_detection_visitor>::get_logger().info("click on ship detected!");
-				this->ship_callback(obj, p, _p);
+				return this->ship_callback(obj, p, _p);
 			}
 		}
 	}
 	return false;
+}
+
+bool click_detection_visitor::visit(player *obj)
+{
+	const unumber x = this->click.x / get_config<paint_config>()->get_cell_width();
+	const unumber y = this->click.y / get_config<paint_config>()->get_cell_height();
+	return this->ship_callback( nullptr, point{ x, y }, get_point_position( point{x,y} ) );
 }
 
 bool click_detection_visitor::visit(area *obj)
