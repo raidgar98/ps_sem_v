@@ -9,6 +9,7 @@
 // Project includes
 #include "../../engine/include/ship.h"
 #include "../../engine/include/area.h"
+#include "../../engine/include/player.h"
 
 template<typename T>
 using threadsafe_collection_type = boost::concurrent::sync_queue<T>;
@@ -18,7 +19,8 @@ struct paint_visitor:
 	protected Log<paint_visitor>,
 	public geometry_visitor,
 	public visits<area>,
-	public visits<ship>
+	public visits<ship>,
+	public visits<player>
 {	
 	paint_visitor( result_collection_t& res, paint_config& );
 
@@ -29,15 +31,20 @@ struct paint_visitor:
 		Log<paint_visitor>::get_logger().warn("Painting for: `" + boost::typeindex::type_id<T>().pretty_name() + "` is not defined."); 
 	}
 
-	void paint(const area&);
-	void paint(const ship&);
-
 	// override visitors for all supported paints
 	virtual bool visit(ship* obj) override { require(obj); paint( *obj ); return true; }
 	virtual bool visit(area* obj) override { require(obj); paint( *obj ); return true; }
+	virtual bool visit(player* obj) override { require(obj); paint( *obj ); return true; }
 
 protected:
 
 	result_collection_t& results;
+
+	std::shared_ptr<sf::RectangleShape> construct_cell( const point&, const sf::Vector2f&, const sf::Color&, const sf::Color& ) const;
+
+	void paint(const area&);
+	void paint(const ship&);
+	void paint(const player&);
+
 };
 

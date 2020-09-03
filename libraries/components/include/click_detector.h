@@ -11,7 +11,7 @@ class click_detection_visitor :
 	public Log<click_detection_visitor>,
 	public geometry_visitor,
 	public visits<ship>,
-	public visits<area>	// dummy
+	public visits<area>	
 {
 public:
 
@@ -20,6 +20,7 @@ public:
 
 	explicit click_detection_visitor( paint_config& );
 	virtual bool visit(ship *obj) override;
+	virtual bool visit(area *obj) override;
 
 protected:
 

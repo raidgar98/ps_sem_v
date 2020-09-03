@@ -38,6 +38,7 @@ create_library( painter
 
 	ship
 	area
+	player
 
 )
 

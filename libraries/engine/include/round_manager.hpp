@@ -50,6 +50,11 @@ public:
 			return *it;
 		}
 
+		round_iterator next() const
+		{
+			return mgr.get_it(nm, false);
+		}
+
 	private:
 		round_iterator(const round_manager &_mgr, const number nm) : mgr{_mgr}, nm{nm} {}
 		void update(const round_iterator& it)
@@ -81,10 +86,10 @@ public:
 private:
 	collection_t &players;
 
-	round_iterator get_it(const number nm) const
+	round_iterator get_it(const number nm, const bool check = true) const
 	{
 		const round_manager& me = *this;
-		if (is_win(players) or nm == -2)
+		if (check && (is_win(players) or nm == -2))
 			return round_iterator(me, -1);
 		else
 		{

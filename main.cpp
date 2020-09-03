@@ -10,6 +10,8 @@
 #include "libraries/engine/include/engine.h"
 #include "libraries/engine/include/area.h"
 
+// TODO: PROFILE
+
 int main()
 {
 	constexpr unumber width = 10;
@@ -26,9 +28,9 @@ int main()
 		{ship{point{3, 0}, point{3, 10}},
 		ship{point{7,0}, point{7, 10}}}};
 
-	const std::vector<area> init_correct_areas{
-		{area{width, height, max_ships, ship_collection_1},
-		area{width, height, max_ships, ship_collection_2}}};
+	const std::vector<player> init_correct_areas{
+		{player{area{width, height, max_ships, ship_collection_1}},
+		player{area{width, height, max_ships, ship_collection_2}}}};
 
 	paint_config config;
 	config.ship_cols = width + 1;
@@ -42,7 +44,7 @@ int main()
 	click_detection_visitor cdvisit{ config };
 	cdvisit.ship_callback = [&](ship* s, const point& p, const pixel_coord& pc)
 	{
-		if(area::shoot( eng.current(), p )) 
+		if(eng.shoot(p)) 
 		{
 			Log<engine>::get_logger() << "shot success";
 			eng.next_turn();
@@ -70,20 +72,17 @@ int main()
 				std::future<void> _ = std::async( std::launch::async, [&]()->void
 				{
 					cdvisit.click = window.mapPixelToCoords( sf::Vector2i{event.mouseButton.x,event.mouseButton.y} );
-					eng.current().accept( &cdvisit );
+					eng.current().get_area().accept( &cdvisit );
 				});
 			}
 		}
 
-		const unumber end_count = 1 + [&]() -> unumber { 
-			unumber ret = 0;
-			for(const auto& v : eng.current().get_ships())
-				ret += v.length();
-			return ret;
-		}();
+		const unumber end_count = 1 + eng.current().get_player_tries().size();
 
 		std::future<void> ret{ std::async( std::launch::async, [&]() -> void {
 			eng.current().accept( &pvisit );
+			eng.current().get_area().accept( &pvisit );
+			eng.current().get_area().for_each_ship( [&](ship& sh) { sh.accept(&pvisit); } );
 		})};
 
 		window.clear();

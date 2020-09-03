@@ -2,11 +2,11 @@
 
 // Project includes
 #include "round_manager.hpp"
-#include "area.h"
+#include "player.h"
 
 class engine : Log<engine>
 {
-	using players_container_t = std::vector<area>;
+	using players_container_t = std::vector<player>;
 	using ship_round_manager_t = round_manager<players_container_t>;
 	using round_manager_iterator_t = ship_round_manager_t::round_iterator;
 
@@ -24,8 +24,8 @@ public:
 	bool next_turn();
 
 	// returns current player
-	const area& current() const;
-	area& current();
+	const player& current() const;
+	player& current();
 
 protected:
 

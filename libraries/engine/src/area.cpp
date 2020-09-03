@@ -62,8 +62,12 @@ unumber area::count_alive() const
 
 bool area::accept( visits<area>* v )
 {
-	v->visit(this);
-	for( ship& sh : this->ships )
-		sh.accept( dynamic_cast<visits<ship>*>(v) );
-	return true;
+	require(v);
+	return v->visit(this);
+}
+
+void area::for_each_ship(std::function<void(ship&)> fn)
+{
+	for(ship& sh : ships)
+		fn(sh);
 }

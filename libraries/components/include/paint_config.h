@@ -24,6 +24,10 @@ struct paint_config : public config
 	sf::Color area_color = sf::Color::White;
 	sf::Color area_outline_color = sf::Color::Black;
 
+	sf::Color cell_missed = sf::Color::Cyan;
+	sf::Color cell_hitted = sf::Color::Red;
+	sf::Color cell_neutral = sf::Color::White;
+
 	pixel_coord begin{ 100.0, 100.0 };
 
 	pixel_number area_width{ 250.0 };

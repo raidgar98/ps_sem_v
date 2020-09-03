@@ -28,3 +28,12 @@ bool click_detection_visitor::visit(ship *obj)
 	}
 	return false;
 }
+
+bool click_detection_visitor::visit(area *obj)
+{
+	require(obj);
+
+	const paint_config* cfg = get_config<paint_config>();
+	return detect_collision( cfg->begin, pixel_coord{ cfg->begin.x + cfg->area_width, cfg->begin.y + cfg->area_height } );
+}
+
