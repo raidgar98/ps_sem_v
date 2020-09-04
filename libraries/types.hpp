@@ -1,6 +1,12 @@
 #pragma once
 
+// STL
 #include <stdexcept>
+#include <sstream>
+#include <iostream>
+
+// Boost
+#include <boost/stacktrace/stacktrace.hpp>
 
 using number = long int;
 using unumber = unsigned long int;
@@ -12,6 +18,9 @@ struct requirements_not_satisfied : std::exception
 
 	virtual const char* what() const throw ()
 	{
+#ifndef NOSTACKTRACE
+		std::cout << boost::stacktrace::to_string( boost::stacktrace::stacktrace() ) << std::endl;
+#endif
 		return _what;
 	}
 
