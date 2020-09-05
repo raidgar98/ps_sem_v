@@ -17,24 +17,24 @@ bool area::add_ship(const ship &s)
 {
 	if (ships.size() == max_ships)
 	{
-		Log<area>::get_logger().warn("failed adding ship because of limit");
+		get_logger().warn("failed adding ship because of limit");
 		return false;
 	}
 	if (std::max(s.get_p1().x, s.get_p2().x) > x_dim)
 	{
-		Log<area>::get_logger().warn("failed adding ship because, ship is too wide in x dimension");
+		get_logger().warn("failed adding ship because, ship is too wide in x dimension");
 		return false;
 	}
 	if (std::max(s.get_p1().y, s.get_p2().y) > y_dim)
 	{
-		Log<area>::get_logger().warn("failed adding ship because, ship is too wide in y dimension");
+		get_logger().warn("failed adding ship because, ship is too wide in y dimension");
 		return false;
 	}
 
 	for (const auto &sh : ships)
 		if (ship::collision(sh, s))
 		{
-			Log<area>::get_logger().warn("failed adding ship. Detected collision with existing one");
+			get_logger().warn("failed adding ship. Detected collision with existing one");
 			return false;
 		}
 

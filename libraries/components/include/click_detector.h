@@ -15,6 +15,7 @@ class click_detection_visitor :
 	public visits<area>,
 	public visits<player>	
 {
+	using Log<click_detection_visitor>::get_logger;
 public:
 
 	pixel_coord click;

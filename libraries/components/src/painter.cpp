@@ -5,7 +5,7 @@ paint_visitor::paint_visitor(result_collection_t &res, paint_config &cnfig)
 
 void paint_visitor::paint(const area &obj)
 {
-	Log<paint_visitor>::get_logger().info("Painting area started");
+	get_logger().info("Painting area started");
 	const paint_config *cfg = get_config<paint_config>();
 	sf::RectangleShape *board = new sf::RectangleShape{};
 
@@ -46,12 +46,12 @@ void paint_visitor::paint(const area &obj)
 	}
 
 	results.wait_push(std::shared_ptr<sf::RectangleShape>(cfg->end_element));
-	Log<paint_visitor>::get_logger().info("Painting area finished");
+	get_logger().info("Painting area finished");
 }
 
 void paint_visitor::paint(const ship &obj)
 {
-	Log<paint_visitor>::get_logger().info("Painting ship started");
+	get_logger().info("Painting ship started");
 	const paint_config *cfg = get_config<paint_config>();
 	std::unique_ptr<std::vector<point>> points_to_paint{point::points_on_distance(obj.get_p1(), obj.get_p2())};
 	const floating cell_width{cfg->get_cell_width()};
@@ -60,7 +60,7 @@ void paint_visitor::paint(const ship &obj)
 
 	for (point &p : *points_to_paint)
 	{
-		// Log<paint_visitor>::get_logger().info("Painting ship in progress...");
+		// get_logger().info("Painting ship in progress...");
 		results.wait_push(construct_cell(
 			p,
 			pixel_coord{cell_width, cell_height},
@@ -68,12 +68,12 @@ void paint_visitor::paint(const ship &obj)
 			cfg->ship_outline_color));
 		results.wait_push(std::shared_ptr<sf::RectangleShape>(cfg->end_element));
 	}
-	Log<paint_visitor>::get_logger().info("Painting ship finished");
+	get_logger().info("Painting ship finished");
 }
 
 void paint_visitor::paint(const player &obj)
 {
-	Log<paint_visitor>::get_logger().info("Painting palyer started");
+	get_logger().info("Painting palyer started");
 
 	const paint_config *cfg = get_config<paint_config>();
 	const player::player_tries_collection_t &points_to_paint{obj.get_player_tries()};
@@ -91,7 +91,7 @@ void paint_visitor::paint(const player &obj)
 		results.wait_push(std::shared_ptr<sf::RectangleShape>(cfg->end_element));
 	}
 
-	Log<paint_visitor>::get_logger().info("Painting player finished");
+	get_logger().info("Painting player finished");
 }
 
 std::shared_ptr<sf::RectangleShape> paint_visitor::construct_cell(const point &p, const sf::Vector2f &size, const sf::Color &fill_color, const sf::Color &outline_color) const

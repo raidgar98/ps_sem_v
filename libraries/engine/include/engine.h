@@ -6,6 +6,8 @@
 
 class engine : Log<engine>
 {
+	using Log<engine>::get_logger;
+
 	using players_container_t = std::vector<player>;
 	using ship_round_manager_t = round_manager<players_container_t>;
 	using round_manager_iterator_t = ship_round_manager_t::round_iterator;

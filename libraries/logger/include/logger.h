@@ -80,6 +80,6 @@ public:
 
 	static logger& get_logger()
 	{
-		return Log<T>::log;
+		return log;
 	}
 };

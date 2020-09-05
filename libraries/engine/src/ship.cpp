@@ -13,7 +13,7 @@ ship::ship(const point &pp1, const point &pp2)
 	point::order(p1, p2);
 	hits.reserve(length());
 
-	Log<ship>::get_logger().dbg("Ship with size: " + std::to_string(hits.capacity()) + ", created");
+	get_logger().dbg("Ship with size: " + std::to_string(hits.capacity()) + ", created");
 }
 
 number ship::length() const
@@ -39,7 +39,7 @@ bool ship::hit(const point &p)
 	if (point::in_area(p1, p2, p) and segment_alive(p))
 	{
 		_apply_hit(p);
-		Log<ship>::get_logger().dbg("Ship hit ( " + std::to_string(p.x) + " , " + std::to_string(p.y) + " )");
+		get_logger().dbg("Ship hit ( " + std::to_string(p.x) + " , " + std::to_string(p.y) + " )");
 		return true;
 	}
 	else
@@ -78,7 +78,7 @@ bool ship::collision(const ship &sh1, const ship &sh2)
 	const auto centric = _ship_centricion(sh1, sh2);
 	if( centric != None )
 	{
-		Log<ship>::get_logger() << "Centric!";
+		get_logger() << "Centric!";
 		return	point::in_area( sh1.p1, sh1.p2, sh2.p1 ) or 
 				point::in_area( sh1.p1, sh1.p2, sh2.p2 ) or 
 				point::in_area(sh2.p1, sh2.p2, sh1.p1) or 

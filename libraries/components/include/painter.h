@@ -16,19 +16,21 @@ using threadsafe_collection_type = boost::concurrent::sync_queue<T>;
 using result_collection_t = threadsafe_collection_type< std::shared_ptr<sf::RectangleShape> >;
 
 struct paint_visitor: 
-	protected Log<paint_visitor>,
+	private Log<paint_visitor>,
 	public geometry_visitor,
 	public visits<area>,
 	public visits<ship>,
 	public visits<player>
 {	
+	using Log<paint_visitor>::get_logger;
+
 	paint_visitor( result_collection_t& res, paint_config& );
 
 	// by default warn, if no overload for object detected
 	template<class T>
 	void paint(const T&) 
 	{
-		Log<paint_visitor>::get_logger().warn("Painting for: `" + boost::typeindex::type_id<T>().pretty_name() + "` is not defined."); 
+		get_logger().warn("Painting for: `" + boost::typeindex::type_id<T>().pretty_name() + "` is not defined."); 
 	}
 
 	// override visitors for all supported paints

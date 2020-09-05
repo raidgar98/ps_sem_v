@@ -10,6 +10,7 @@ class area :
 	private Log<area>,
 	public Visitable<area>
 {
+	using Log<area>::get_logger;
 public:
 
 	area(const unumber x_dim, const unumber y_dim, const unumber max_ship_count = 5ul, const std::vector<ship>& _ships = {});

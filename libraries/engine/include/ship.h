@@ -12,6 +12,7 @@ class ship :
 	public Visitable<ship>,
 	private Log<ship>
 {
+	using Log<ship>::get_logger;
 public:
 
 	ship(const point& p1, const point& p2);

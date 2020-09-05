@@ -11,6 +11,7 @@
 template <class _iterable>
 class round_manager : Log<round_manager<_iterable> >
 {
+	using Log<round_manager<_iterable> >::get_logger;
 
 	using collection_t = _iterable;
 	using iterator_t = decltype(((collection_t *)(nullptr))->begin());
@@ -20,6 +21,7 @@ class round_manager : Log<round_manager<_iterable> >
 public:
 	class round_iterator : Log<round_iterator>
 	{
+		using Log<round_iterator>::get_logger;
 	public:
 		void operator++(int) { update(mgr.get_it(nm)); }
 		void operator++() { update(mgr.get_it(nm)); }
