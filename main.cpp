@@ -1,5 +1,6 @@
 // STL
 #include <future>
+#include <atomic>
 
 // SFML
 #include <SFML/Graphics.hpp>
@@ -42,6 +43,10 @@ int main()
 	result_collection_t results;
 	paint_visitor pvisit{ results, config };
 	click_detection_visitor cdvisit{ config };
+
+	std::atomic_bool is_click_handled; 
+	is_click_handled.store( false );
+
 	cdvisit.ship_callback = [&](ship* s, const point& p, const pixel_coord& pc)
 	{
 		Log<engine>::get_logger() << p;
@@ -69,8 +74,9 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-			else if( event.type == sf::Event::MouseButtonPressed and event.mouseButton.button == sf::Mouse::Button::Left )
+			else if( event.type == sf::Event::MouseButtonPressed and event.mouseButton.button == sf::Mouse::Button::Left and not is_click_handled.load() )
 			{
+				is_click_handled.store(true);
 				std::future<void> _ = std::async( std::launch::async, [&]()->void
 				{
 					cdvisit.click = window.mapPixelToCoords( sf::Vector2i{event.mouseButton.x,event.mouseButton.y} );
@@ -90,6 +96,7 @@ int main()
 
 						if(_hit) eng.next_turn();
 					}
+					is_click_handled.store(false);
 				});
 			}
 		}
