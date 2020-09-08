@@ -55,8 +55,8 @@ target_link_libraries( ${EXECUTABLE_NAME}
 
 	${SFML_LIBRARIES_TO_LINK}
 
-	painter
-	click_detector
+	paint_visitor
+	click_visitor
 	engine
 )
 

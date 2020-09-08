@@ -6,8 +6,8 @@
 #include <SFML/Graphics.hpp>
 
 // Project Includes
-#include "libraries/components/include/painter.h"
-#include "libraries/components/include/click_detector.h"
+#include "libraries/visitors/include/paint_visitor.h"
+#include "libraries/visitors/include/click_visitor.h"
 #include "libraries/engine/include/engine.h"
 #include "libraries/engine/include/area.h"
 

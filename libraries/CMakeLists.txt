@@ -21,6 +21,5 @@ ENDMACRO()
 SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
 foreach(ss ${SUBDIRS})
-	message(${ss})
 	add_subdirectory(${ss})
 endforeach()
