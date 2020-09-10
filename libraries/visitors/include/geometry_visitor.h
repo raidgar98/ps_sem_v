@@ -2,7 +2,6 @@
 
 // Project includes
 #include "../../engine/include/point.h"
-// #include "../../logger/include/logger.h"
 #include "../../patterns/include/visitor.hpp"
 #include "paint_config.h"
 

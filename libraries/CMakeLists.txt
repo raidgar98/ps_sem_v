@@ -1,22 +1,9 @@
-# project(libraries)
-# cmake_minimum_required(3.16)
+cmake_minimum_required(VERSION 3.1)
+include( "${CUSTOM_CMAKE_SCRIPTS_DIR}/get_all_directories.cmake" )
 
 add_library(types 
-
 	dummy.cpp
-
 )
-
-MACRO(SUBDIRLIST result curdir)
-	FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-	SET(dirlist "")
-	FOREACH(child ${children})
-		IF(IS_DIRECTORY ${curdir}/${child} AND EXISTS ${curdir}/${child}/CMakeLists.txt)
-			LIST(APPEND dirlist ${child})
-		ENDIF()
-	ENDFOREACH()
-	SET(${result} ${dirlist})
-ENDMACRO()
 
 SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 

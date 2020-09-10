@@ -10,6 +10,9 @@ if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
 	message(FATAL_ERROR "In-source builds are not allowed, remove CMakeFiles and CMakeCache.txt")
 endif()
 
+# set global variable
+set(CUSTOM_CMAKE_SCRIPTS_DIR ${PROJECT_SOURCE_DIR}/cmake)
+
 # update submodules
 find_program(GIT_PROGRAM git)
 if(NOT GIT_PROGRAM)
@@ -39,14 +42,8 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 # setup SFML
-find_package(SFML 2.5 COMPONENTS graphics audio window system REQUIRED)
-set(
-	SFML_LIBRARIES_TO_LINK
-	sfml-graphics
-	sfml-audio
-	sfml-window
-	sfml-system
-)
+include( "${CUSTOM_CMAKE_SCRIPTS_DIR}/attach_package.cmake" )
+attach_sfml()
 
 # link required libraries to main program
 target_link_libraries( ${EXECUTABLE_NAME}
