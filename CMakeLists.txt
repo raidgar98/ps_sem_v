@@ -50,10 +50,9 @@ target_link_libraries( ${EXECUTABLE_NAME}
 
 	Threads::Threads
 
-	${SFML_LIBRARIES_TO_LINK}
+	base_view
+	board_view
+	# ${SFML_LIBRARIES_TO_LINK}
 
-	paint_visitor
-	click_visitor
-	engine
 )
 

@@ -3,7 +3,7 @@
 // Project includes
 #include "../../engine/include/point.h"
 #include "../../patterns/include/visitor.hpp"
-#include "paint_config.h"
+#include "../../configs/include/paint_config.h"
 
 class geometry_visitor :
 	public configurable

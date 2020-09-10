@@ -6,10 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 // Project Includes
-#include "libraries/visitors/include/paint_visitor.h"
-#include "libraries/visitors/include/click_visitor.h"
-#include "libraries/engine/include/engine.h"
-#include "libraries/engine/include/area.h"
+#include "libraries/components/include/board_view.h"
 
 auto& get_logger() { struct main_function : public Log<main_function> {}; return  main_function::get_logger(); }
 
@@ -47,24 +44,10 @@ int main()
 	std::atomic_bool is_click_handled;
 	is_click_handled.store(false);
 
-	cdvisit.ship_callback = [&](ship *s, const point &p, const pixel_coord &pc) {
-		get_logger() << p;
-		if (eng.shoot(p))
-		{
-			get_logger() << "shot success";
-			return true;
-		}
-		else
-		{
-			get_logger() << "shot failed";
-			return false;
-		}
-	};
+	board_view bv{pvisit, cdvisit, eng};
 
 	sf::RenderWindow window(sf::VideoMode(config.area_width + 100, config.area_height + 100), "Ship game");
 
-	// sf::CircleShape shape(100.f);
-	// shape.setFillColor(sf::Color::Green);
 	window.setFramerateLimit(20);
 	while (window.isOpen())
 	{
@@ -73,59 +56,48 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-			else if (event.type == sf::Event::MouseButtonPressed and event.mouseButton.button == sf::Mouse::Button::Left and not is_click_handled.load())
+			else if (
+				event.type == sf::Event::MouseButtonPressed and 
+				event.mouseButton.button == sf::Mouse::Button::Left and 
+				not is_click_handled.load()
+			)
 			{
 				is_click_handled.store(true);
 				std::future<void> _ = std::async(std::launch::async, [&]() -> void {
-					cdvisit.click = window.mapPixelToCoords(sf::Vector2i{event.mouseButton.x, event.mouseButton.y});
-					if (eng.current().get_area().accept(&cdvisit))
-					{
-						bool _hit = false;
-						for (ship &sh : eng.next().get_area().get_ships())
-						{
-							_hit = sh.accept(&cdvisit);
-							if (_hit)
-								break;
+					
+					cdvisit.click = window.mapPixelToCoords(
+						sf::Vector2i{
+							event.mouseButton.x, 
+							event.mouseButton.y
 						}
+					);
 
-						if (not _hit)
-						{
-							_hit = eng.current().accept(&cdvisit);
-						}
+					bv.handle_click();
 
-						if (_hit)
-							eng.next_turn();
-					}
 					is_click_handled.store(false);
 				});
 			}
 		}
 
-		const unumber end_count = 1 + eng.current().get_player_tries().size() + [&]() -> unumber {
-			return 0;
-			unumber ret = 0;
-			for (const auto &v : eng.current().get_area().get_ships())
-				ret += v.length();
-			return ret;
-		}();
-
 		std::future<void> ret{std::async(std::launch::async, [&]() -> void {
-			eng.current().get_area().accept(&pvisit);
-			// eng.current().get_area().for_each_ship( [&](ship& sh) { sh.accept(&pvisit); } );
-			eng.current().accept(&pvisit);
+			
+			bv.render();
+			results.push(nullptr); // finished render
 		})};
 
 		window.clear();
-
-		for (int i = 0; i < end_count;)
+		int i = 0;
+		while(i < 2)
 		{
 			std::shared_ptr<sf::RectangleShape> shape;
 			results.wait_pull(shape);
 
-			if (shape == nullptr)
-				i += 1;
+			if (shape == nullptr) i += 1;
 			else
+			{
+				i = 0;
 				window.draw(*shape);
+			}
 		}
 		window.display();
 	}
