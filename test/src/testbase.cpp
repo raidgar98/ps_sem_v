@@ -14,7 +14,7 @@ namespace testbase
 		const unumber amount_of_ships{a.count_alive()};
 		const std::unique_ptr<std::vector<point>> targets{point::points_on_distance(s.get_p1(), s.get_p2())};
 		for(const point& p : *targets)
-			BOOST_REQUIRE( area::shoot(a, p) ); 
+			BOOST_REQUIRE( a.shoot(p) ); 
 		BOOST_REQUIRE_EQUAL( a.count_alive(), amount_of_ships - 1 );
 	};
 }

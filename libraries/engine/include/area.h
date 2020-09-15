@@ -23,7 +23,7 @@ public:
 	// returns x dimension, y dimension and maximum number of ships
 	std::tuple<unumber, unumber, unumber> get_params() const { return {x_dim, y_dim, max_ships}; }
 
-	static bool shoot(area&, const point&);
+	bool shoot(const point&);
 	virtual bool accept( visits<area>* v ) override;
 
 private:

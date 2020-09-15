@@ -14,6 +14,8 @@ struct player_try
 	inline friend bool operator<(const player_try& p1, const player_try& p2) { return p1.shoot_try < p2.shoot_try; }
 };
 
+
+
 class player : 
 	public Log<player>,
 	public Visitable<player>
@@ -27,14 +29,14 @@ private:
 
 public:
 
-	enum shoot_type
+	enum class shoot_type : int
 	{
-		CORRECT,
-		MISS,
-		ERROR
+		CORRECT = 0,
+		MISS = 1,
+		ERROR = 2
 	};
 
-	player(const area&);
+	player(const area&, const bool = false);
 
 	area& get_area();
 
@@ -42,6 +44,10 @@ public:
 	const player_tries_collection_t& get_player_tries() const;
 
 	shoot_type shoot(player&, const point&);
+	bool is_shoot_possible(const point&) const;
+	shoot_type accept_shoot(const point&, const bool);
 
 	virtual bool accept(visits<player>*);
+
+	bool is_online = false;
 };

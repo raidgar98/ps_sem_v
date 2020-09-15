@@ -73,10 +73,15 @@ void board_view::setup_engine(const unumber player_count)
 		area a{ 
 			static_cast<unumber>(cfg->ship_rows) - 1ul, 
 			static_cast<unumber>(cfg->ship_cols - 1ul), 
-			cfg->max_ships 
+			cfg->max_ships
 		};
 		a.accept(&init);
 		players.emplace_back( a );
+
+		if(i >= 1)
+		{
+			players.back().is_online = true;
+		}
 	}
 
 	eng = std::make_unique<engine>( players );

@@ -22,7 +22,7 @@ public:
 	template <class T>
 	inline static logger _get_logger(const char * alternative = "unknown")
 	{
-		const std::string name = boost::typeindex::type_id<T>().pretty_name();
+		const std::string name = get_class_name<T>();
 		for(const char c : name)
 			if( std::isalnum(c) == 0 and c != '_')
 				return logger(alternative);
@@ -56,6 +56,12 @@ public:
 	void info(const std::string &) const;
 	void warn(const std::string &) const;
 	void error(const std::string &) const;
+
+	template<typename T>
+	static std::string get_class_name()
+	{
+		return boost::typeindex::type_id<T>().pretty_name();
+	}
 
 private:
 

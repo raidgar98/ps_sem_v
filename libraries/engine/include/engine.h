@@ -1,5 +1,8 @@
 #pragma once
 
+// STL
+#include <thread>
+
 // Project includes
 #include "round_manager.hpp"
 #include "player.h"
@@ -18,6 +21,7 @@ public:
 
 	// perform shoot
 	bool shoot(const point &);
+	std::thread handle_shoot(player&);
 
 	// checks win
 	bool win() const;

@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(round_manager_test_1)
 
 	for (auto it = rm.begin(); it != rm.end(); it++)
 	{
-		BOOST_REQUIRE(area::shoot(*it, targets.front()));
+		BOOST_REQUIRE( (*it).shoot( targets.front() ) );
 		targets.pop();
 		BOOST_REQUIRE_GT( targets.size(), 0 );
 	}

@@ -46,10 +46,12 @@ include( "${CUSTOM_CMAKE_SCRIPTS_DIR}/attach_package.cmake" )
 attach_sfml()
 
 # link required libraries to main program
+include_directories(libraries/cpprestsdk/Release/include)
 target_link_libraries( ${EXECUTABLE_NAME}
 
 	Threads::Threads
 
+	network
 	base_view
 	board_view
 	# ${SFML_LIBRARIES_TO_LINK}

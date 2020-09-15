@@ -52,9 +52,9 @@ std::vector<ship> &area::get_ships()
 	return ships;
 }
 
-bool area::shoot(area &a, const point &p)
+bool area::shoot(const point &p)
 {
-	for (ship &s : a.ships)
+	for (ship &s : ships)
 		if (s.hit(p))
 			return true;
 	return false;

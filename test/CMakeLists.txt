@@ -21,6 +21,7 @@ target_link_libraries( tests
 	point
 	ship
 	area
+	player
 	engine
 
 	logger

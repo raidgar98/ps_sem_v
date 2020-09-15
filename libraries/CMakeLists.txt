@@ -7,6 +7,8 @@ add_library(types
 
 SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
+include_directories(cpprestsdk/Release/include)
+
 foreach(ss ${SUBDIRS})
 	add_subdirectory(${ss})
 endforeach()

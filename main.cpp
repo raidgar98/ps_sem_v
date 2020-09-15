@@ -7,11 +7,20 @@
 
 // Project Includes
 #include "libraries/components/include/board_view.h"
+#include "libraries/network/include/network.h"
 
 auto& get_logger() { struct main_function : public Log<main_function> {}; return  main_function::get_logger(); }
 
 int main()
 {
+	network_response_queue::set( new network_response_queue::value_type() );
+	network_request_queue::set( new network_request_queue::value_type() );
+	network net;
+
+	get_logger() << "setted up test objects";
+	auto _ = net.start_networking();
+	get_logger() << "networking started";
+
 	constexpr unumber width = 10;
 	constexpr unumber height = 10;
 	constexpr unumber max_ships = 4;
@@ -99,5 +108,6 @@ int main()
 		window.display();
 	}
 
+	net.stop_networking();
 	return 0;
 }
