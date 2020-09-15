@@ -13,7 +13,7 @@ protected:
 class configurable
 {
 protected:
-	config* _config{ nullptr };
+	const config* _config{ nullptr };
 
 	~configurable()
 	{
@@ -24,21 +24,21 @@ protected:
 	const T* get_config() const 
 	{
 		require( _config );
-		return dynamic_cast<T*>(_config);
+		return dynamic_cast<const T*>(_config);
 	}
 
 public:
 
-	void set_config(config* cfg)
+	void set_config(const config* cfg, const bool)
 	{
 		require( cfg );
 		_config = cfg;
 	}
 
 	template<typename T>
-	void set_config(T* cfg)
+	void set_config(const T* cfg)
 	{
-		if( const config* conf = reinterpret_cast<const config*>(cfg) ) set_config(conf);
+		if( const config* conf = reinterpret_cast<const config*>(cfg) ) set_config(conf, true);
 		else require(false);
 	}
 };

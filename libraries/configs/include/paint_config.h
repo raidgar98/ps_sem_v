@@ -39,7 +39,7 @@ struct paint_config : public config
 
 	pixel_number ship_rows{ 20.0 };
 	pixel_number ship_cols{ 20.0 };
-
+	unumber max_ships{ 5ul };
 	
 	constexpr pixel_number get_cell_width() const
 	{

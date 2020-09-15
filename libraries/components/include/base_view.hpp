@@ -8,12 +8,15 @@
 
 class base_view :
 	private Log<base_view>,
-	public configurable
+	protected configurable
 {
 	using Log<base_view>::get_logger;
 public:
 
 	void render( const paint_config* cnf = nullptr ) { __process(cnf); }
+
+	// returns true, if click happend on this component
+	virtual bool handle_click() { return false; }
 	virtual ~base_view() {}
 
 protected:
@@ -22,7 +25,7 @@ protected:
 	// Implementation should be thread safe
 	// if cnf == nullptr, rendering process should use already choosen config in paint visitor
 	virtual void __process( const paint_config* cnf = nullptr ) = 0;
-	base_view(paint_visitor&);
+	base_view(const paint_config* cfg, paint_visitor&);
 
 	paint_visitor& _painter;
 };

@@ -3,6 +3,7 @@
 // STL
 #include <stdexcept>
 #include <sstream>
+#include <vector>
 #include <iostream>
 
 // Boost
@@ -37,6 +38,8 @@ inline void require(const bool arg, const char* msg = "requirements not satisfie
 		throw requirements_not_satisfied{ msg };
 	}catch(const requirements_not_satisfied&)
 	{
+		boost::stacktrace::stacktrace stack;
+		std::cout << boost::stacktrace::to_string(stack);
 		throw;
 	}
 }

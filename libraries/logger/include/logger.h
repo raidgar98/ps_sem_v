@@ -46,7 +46,7 @@ public:
 	const logger &operator<<(const T &obj) const
 	{
 		std::stringstream ss;
-		ss << get_preambula(2);
+		ss << get_preambula(3);
 		ss << obj;
 		print_out(ss.str(), debug_format);
 		return *this;

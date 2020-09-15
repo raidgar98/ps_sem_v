@@ -23,3 +23,4 @@ create_library( paint_visitor
 )
 
 create_library( click_visitor geometry_visitor ship area player )
+create_library( init_visitor area )

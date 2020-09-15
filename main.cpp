@@ -16,37 +16,31 @@ int main()
 	constexpr unumber height = 10;
 	constexpr unumber max_ships = 4;
 
-	const std::vector<ship> ship_collection_1{
-		{ship{point{0, 0}, point{0, 10}},
-		 ship{point{1, 0}, point{1, 10}},
-		 ship{point{3, 4}, point{6, 4}},
-		 ship{point{10, 0}, point{10, 10}}}};
-
-	const std::vector<ship> ship_collection_2{
-		{ship{point{3, 0}, point{3, 10}},
-		 ship{point{7, 0}, point{7, 10}}}};
-
-	const std::vector<player> init_correct_areas{
-		{player{area{width, height, max_ships, ship_collection_1}},
-		 player{area{width, height, max_ships, ship_collection_2}}}};
-
 	paint_config config;
 	config.ship_cols = width + 1;
 	config.ship_rows = height + 1;
+	config.max_ships = max_ships;
 	config.begin = pixel_coord(10.0f, 10.0f);
 
-	engine eng{init_correct_areas};
+	sf::RenderWindow window(sf::VideoMode(config.area_width + 100, config.area_height + 100), "Ship game");
+	sf::Font fnt; require( fnt.loadFromFile( "/opt/idea/jbr/lib/fonts/FiraCode-Retina.ttf" ) );
+	sf::Text loading_caption{ sf::String( L"Loading. Please Wait..." ), fnt };
+	loading_caption.setPosition({ 100.0f, 100.0f });
+
+	window.clear();
+	window.draw( loading_caption );
+	window.display();
 
 	result_collection_t results;
 	paint_visitor pvisit{results, config};
 	click_detection_visitor cdvisit{config};
 
+	std::vector<base_view*> views{{
+		new board_view{&config, pvisit, cdvisit}
+	}};
+
 	std::atomic_bool is_click_handled;
 	is_click_handled.store(false);
-
-	board_view bv{pvisit, cdvisit, eng};
-
-	sf::RenderWindow window(sf::VideoMode(config.area_width + 100, config.area_height + 100), "Ship game");
 
 	window.setFramerateLimit(20);
 	while (window.isOpen())
@@ -72,7 +66,8 @@ int main()
 						}
 					);
 
-					bv.handle_click();
+					for(base_view* bv : views)
+						if( bv->handle_click() ) break;
 
 					is_click_handled.store(false);
 				});
@@ -81,7 +76,9 @@ int main()
 
 		std::future<void> ret{std::async(std::launch::async, [&]() -> void {
 			
-			bv.render();
+			for(base_view* bv : views)
+				bv->render();
+
 			results.push(nullptr); // finished render
 		})};
 

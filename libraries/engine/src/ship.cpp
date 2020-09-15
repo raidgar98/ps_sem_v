@@ -1,7 +1,6 @@
 #include "ship.h"
 
 // STL
-
 #include <tuple>
 #include <array>
 
@@ -9,7 +8,9 @@ ship::ship(const point &pp1, const point &pp2)
 	: p1{pp1}, p2{pp2}
 {
 	require( pp1 != pp2 );
-	require(point::centric(pp1, pp2));
+	std::stringstream ss;
+	ss << pp1 << ", " << pp2;
+	require(point::centric(pp1, pp2), ss.str().c_str());
 	point::order(p1, p2);
 	hits.reserve(length());
 
