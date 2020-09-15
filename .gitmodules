@@ -1,3 +1,6 @@
 [submodule "libraries/rang"]
 	path = libraries/rang
 	url = https://github.com/agauniyal/rang
+[submodule "libraries/cpprestsdk"]
+	path = libraries/cpprestsdk
+	url = https://github.com/microsoft/cpprestsdk.git
