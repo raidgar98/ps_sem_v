@@ -1,0 +1,38 @@
+name: CI Build
+
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create Build Environment
+      shell: bash
+      run: mkdir ${{runner.workspace}}/build
+    
+    - name: Install required dependencies
+      shell: bash
+      run: sudo apt-get install -y cmake make g++ gcc libboost-all-dev git libsfml-dev
+
+    - name: Configure CMake and Project
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE ../ps_sem_v
+
+    - name: Build
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: make -j$(nproc)
+
+    - name: Test
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      # Execute tests defined by the CMake configuration.  
+      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+      run: ./test/tests -l all
