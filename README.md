@@ -1,5 +1,5 @@
 # Projekt Semestralny z Programowania Systemowego (Semestr V)
-##### | [Krzysztof Mochocki](https://github.com/raidgar98) | [Michał Zapart](https://github.com/) |
+##### | [Krzysztof Mochocki](https://github.com/raidgar98) | [Michał Zapart](https://github.com/MaestroMichael) |
 
 <br>
 
